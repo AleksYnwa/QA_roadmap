@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Theory — Учебник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e10;
+    --surface: #18181c;
+    --surface2: #222228;
+    --border: #2e2e38;
+    --accent: #7c6dfa;
+    --accent2: #3ecf8e;
+    --text: #e8e8f0;
+    --muted: #888898;
+    --tag-bg: #1e1e2a;
+    --tag-text: #a09af0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0 1.5rem;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--accent2); }
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .progress-bar {
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888898' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0.75rem center;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* FILTERS */
+  .filters {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* MAIN */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* SECTION */
+  .section-block {
+    margin-bottom: 0.5rem;
+  }
+  .section-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 1.5rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-num {
+    font-size: 11px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ACCORDION ITEM */
+  .acc-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .acc-item:hover { border-color: #3e3e52; }
+  .acc-item.open { border-color: var(--accent); }
+  .acc-item.done { border-color: var(--accent2); }
+  .acc-item.done .acc-btn { opacity: 0.7; }
+
+  .acc-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  .acc-btn:hover { background: var(--surface2); }
+
+  .acc-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .acc-item.done .acc-check {
+    background: var(--accent2);
+    border-color: var(--accent2);
+  }
+  .acc-check svg { display: none; }
+  .acc-item.done .acc-check svg { display: block; }
+
+  .acc-title { flex: 1; }
+
+  .acc-arrow {
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: transform 0.3s ease;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(180deg); }
+
+  /* BODY */
+  .acc-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem 3.5rem;
+    color: #c8c8d8;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+  .acc-item.open .acc-body { display: block; }
+
+  .acc-body h4 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--accent);
+    margin: 1rem 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .acc-body p { margin-bottom: 0.75rem; }
+  .acc-body ul, .acc-body ol {
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .acc-body li { margin-bottom: 0.3rem; }
+  .acc-body strong { color: var(--text); font-weight: 500; }
+  .acc-body em { color: var(--accent2); font-style: normal; }
+  .acc-body code {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .tip {
+    background: #1a1a28;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 15px;
+    color: #a8a8c0;
+  }
+  .tip strong { color: var(--accent); }
+  .severity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 0.75rem 0;
+  }
+  .severity-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+  }
+  .severity-table tr:nth-child(even) td { background: var(--tag-bg); }
+  .badge {
+    display: inline-block;
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .badge-red { background: #2a1515; color: #f08080; }
+  .badge-orange { background: #2a1e10; color: #e8a060; }
+  .badge-yellow { background: #26220e; color: #d4bc50; }
+  .badge-blue { background: #0e1e2a; color: #70b0e8; }
+  .badge-gray { background: var(--surface2); color: var(--muted); }
+  .badge-green { background: #102218; color: #50c878; }
+
+  /* STATS BAR */
+  .stats {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-num.green { color: var(--accent2); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .acc-body { padding-left: 1rem; }
+    .stats { grid-template-columns: repeat(3,1fr); }
+    .stat-num { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">QA<span>.</span>theory</div>
+    <div class="progress-wrap">
+      <span id="progress-text">0 / 0 изучено</span>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-num" id="stat-total">0</div>
+    <div class="stat-label">всего вопросов</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num green" id="stat-done">0</div>
+    <div class="stat-label">изучено</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" id="stat-sections">15</div>
+    <div class="stat-label">тем</div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" placeholder="Поиск по вопросам..." id="search" />
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">Все</button>
+  <button class="filter-btn" data-filter="done">Изученные</button>
+  <button class="filter-btn" data-filter="undone">Не изученные</button>
+</div>
+
+<main id="main-content"></main>
+
+<script>
+const DATA = [
+  {
+    section: "Баг & QA",
+    num: "00",
+    items: [
+      {
+        q: "Что такое баг и что такое тестирование?",
+        a: `<p><strong>Баг</strong> — это отклонение фактического результата (<em>actual result</em>) от ожидаемого результата (<em>expected result</em>).</p>
+<p><strong>Тестирование</strong> — процесс анализа программного обеспечения и технической документации с целью выявления дефектов и повышения качества продукта.</p>`
+      },
+      {
+        q: "Есть ли разница между багом и дефектом?",
+        a: `<p>Да, разница есть, хотя в повседневной речи их используют как синонимы.</p>
+<ul>
+<li><strong>Баг (bug)</strong> — неожиданное поведение программы из-за ошибки в коде. Пример: «Приложение падает при нажатии на "Сохранить"».</li>
+<li><strong>Дефект (defect)</strong> — любое отклонение от требований, включая ошибки в коде, документации, дизайне. Пример: «В документации указано, что кнопка должна быть синей, но она красная».</li>
+<li><strong>Сбой</strong> — результат выполнения кода с дефектом.</li>
+</ul>
+<div class="tip"><strong>Вывод:</strong> Все баги — дефекты, но не все дефекты — баги.</div>`
+      },
+      {
+        q: "В чём заключаются обязанности QA? Задачи QA",
+        a: `<p>QA отвечает за <strong>предотвращение ошибок</strong>: создаёт план тестирования, разрабатывает тестовые сценарии и взаимодействует с командой разработки.</p>
+<h4>Основные задачи</h4>
+<ol>
+<li>Планирование тестирования</li>
+<li>Создание тестовой документации</li>
+<li>Выполнение тестирования</li>
+<li>Отчётность</li>
+<li>Поддержка</li>
+</ol>`
+      },
+      {
+        q: "Чем отличаются Testing, QC, QA, AQA?",
+        a: `<ul>
+<li><strong>Testing</strong> — первый уровень. Реактивная работа: выдали → проверил → описал дефекты → исправили. Цель: выявить и зафиксировать дефекты.</li>
+<li><strong>Quality Control (QC)</strong> — второй уровень. Контроль соблюдения требований, анализ результатов, оценка готовности и качества.</li>
+<li><strong>Quality Assurance (QA)</strong> — третий уровень. Совокупность мероприятий для создания и выпуска качественного продукта. QA может разрабатывать и внедрять новые инструменты тестирования.</li>
+<li><strong>AQA</strong> — специалисты по автоматизации тестирования.</li>
+</ul>`
+      },
+      {
+        q: "За что QA инженеру платят деньги?",
+        a: `<ol>
+<li>QA-инженеры <strong>экономят</strong> время команды за счёт оптимизации процессов и <strong>страхуют</strong> бизнес от убытков из-за багов.</li>
+<li>Баги обходятся бизнесу <strong>очень дорого</strong>: от нескольких зарплат разработчика до ВВП целой страны.</li>
+<li>Разработчики не хотят и <strong>не могут</strong> делать работу QA.</li>
+</ol>`
+      },
+      {
+        q: "Уровни серьёзности бага / Severity",
+        a: `<p>Атрибут, характеризующий влияние дефекта на работоспособность ПО.</p>
+<table class="severity-table">
+<tr><td><span class="badge badge-red">Blocker</span></td><td>Баг полностью блокирует работу приложения. Пример: приложение не запускается.</td></tr>
+<tr><td><span class="badge badge-orange">Critical</span></td><td>Ограничена работа важной части, но ПО можно использовать. Пример: не применяется промокод, но купить можно.</td></tr>
+<tr><td><span class="badge badge-yellow">Major</span></td><td>Пользователь видит дефект, но он не мешает работать. Пример: страница не открывается из меню, но открывается другим путём.</td></tr>
+<tr><td><span class="badge badge-blue">Minor</span></td><td>Не влияет на функциональность. Пример: неудачно расположенная кнопка.</td></tr>
+<tr><td><span class="badge badge-gray">Trivial</span></td><td>Не влияет на работу программы. Пример: опечатка в тексте.</td></tr>
+</table>
+<div class="tip"><strong>Пример бага с высокой серьёзностью и низким приоритетом:</strong><br>
+— Кнопка «Домой» не работает на странице «Спасибо за заказ».<br>
+— Неправильный расчёт бонусных баллов на странице истории заказов 3-х летней давности.</div>`
+      },
+      {
+        q: "Приоритеты бага / Priority",
+        a: `<p>Атрибут, указывающий на очерёдность устранения дефекта.</p>
+<ul>
+<li><span class="badge badge-red">High</span> — Назначается багам, которые должны быть устранены в первую очередь.</li>
+<li><span class="badge badge-yellow">Medium</span> — Обычный приоритет по умолчанию. Исправляются во вторую очередь.</li>
+<li><span class="badge badge-gray">Low</span> — Не влияют на функционал, исправляются последними при наличии времени.</li>
+</ul>
+<div class="tip"><strong>Пример бага с высоким приоритетом и низкой серьёзностью:</strong><br>
+— Опечатка на главной странице бизнес-портала. Системе не вредит, а репутации — да.<br>
+— Логотип компании на главной странице отображается в низком качестве (размытый).</div>`
+      },
+      {
+        q: "Стадии бага",
+        a: `<ol>
+<li><strong>Новый</strong> — впервые найденный баг, занесённый в систему.</li>
+<li><strong>Назначен</strong> — баг просмотрен и утверждён после публикации.</li>
+<li><strong>Открыт</strong> — разработчик работает над устранением.</li>
+<li><strong>Исправлен</strong> — баг исправлен, требует ретеста.</li>
+<li><strong>Повторная проверка</strong> — выполняется ретест.</li>
+<li><strong>Проверен</strong> — статус после ретеста.</li>
+<li><strong>Переоткрыт</strong> — баг не исправлен или исправлен не полностью.</li>
+<li><strong>Закрыт</strong> — баг больше не существует.</li>
+</ol>`
+      },
+      {
+        q: "По какой причине разработчик может отказаться исправлять баг?",
+        a: `<ul>
+<li><strong>Rejected</strong> — разработчик считает дефект некорректным.</li>
+<li><strong>Duplicate</strong> — такой баг уже заведён в системе.</li>
+<li><strong>Deferred</strong> — низкий приоритет, будет исправлен в следующих релизах.</li>
+<li><strong>Not a Bug</strong> — дефект не влияет на функциональность приложения.</li>
+</ul>`
+      },
+      {
+        q: "Верификация и валидация — в чём разница?",
+        a: `<ul>
+<li><strong>Верификация</strong> — проверка соответствия формальным требованиям. «Мы строим продукт правильно?»</li>
+<li><strong>Валидация</strong> — проверка соответствия требованиям пользователя/заказчика. «Мы строим правильный продукт?»</li>
+</ul>
+<div class="tip"><strong>Пример:</strong> По заданию поле пароля скрывает символы точками (верификация пройдена), но без кнопки «Показать пароль» пользователь не видит, что печатает, и ошибается — валидация не пройдена.</div>`
+      }
+    ]
+  },
+  {
+    section: "SDLC",
+    num: "01",
+    items: [
+      {
+        q: "Что такое SDLC, основные этапы?",
+        a: `<p><strong>SDLC</strong> (Software Development Life Cycle) — жизненный цикл ПО: период от принятия решения о создании продукта до вывода системы из эксплуатации.</p>
+<ol>
+<li><strong>Анализ требований</strong> — «Какие проблемы требуют решений?»</li>
+<li><strong>Планирование</strong> — «Что мы хотим сделать?»</li>
+<li><strong>Проектирование и дизайн</strong> — «Как мы добьёмся целей?»</li>
+<li><strong>Разработка ПО</strong> — создание продукта.</li>
+<li><strong>Тестирование</strong> — обеспечение качества.</li>
+<li><strong>Развертывание</strong> — выпуск финального продукта.</li>
+<li><strong>Поддержка</strong> — сопровождение продукта.</li>
+</ol>`
+      },
+      {
+        q: "Какие бывают методологии разработки ПО?",
+        a: `<ul>
+<li><strong>Waterfall</strong> — каскадная модель: каждая стадия начинается только после завершения предыдущей.</li>
+<li><strong>Incremental Model</strong> — проект реализуется с небольшими добавлениями (инкрементами).</li>
+<li><strong>Iterative Model</strong> — продукт улучшается от MVP до полноценного по итерациям.</li>
+<li><strong>Spiral Model</strong> — анализ рисков + итерации. После каждого витка принимается решение о продолжении.</li>
+<li><strong>V-Model</strong> — усовершенствованный Waterfall, каждый этап разработки связан с тестированием.</li>
+<li><strong>RAD</strong> — быстрые прототипы → тесты → доработка.</li>
+<li><strong>Agile</strong> — короткие циклы (спринты), гибкость. Включает SCRUM и Kanban.</li>
+</ul>`
+      },
+      {
+        q: "Что такое SCRUM? Ритуалы",
+        a: `<p><strong>SCRUM</strong> — гибкий фреймворк для управления проектами, разбивающий работу на короткие циклы (спринты).</p>
+<h4>5 ритуалов</h4>
+<ol>
+<li>Планирование спринта</li>
+<li>Спринт (сам период работы)</li>
+<li>Ежедневный митинг / стендап</li>
+<li>Обзор спринта</li>
+<li>Ретроспектива спринта</li>
+</ol>`
+      },
+      {
+        q: "Что такое Kanban? Инструменты",
+        a: `<p><strong>Kanban</strong> — методология визуального управления задачами и рабочим процессом.</p>
+<h4>5 инструментов</h4>
+<ol>
+<li><strong>Канбан-доска</strong> — визуализирует поток работ (столбцы: «К выполнению», «В работе», «Готово»).</li>
+<li><strong>Каденции</strong> — регулярные встречи: стендап, пополнение бэклога, ретроспектива.</li>
+<li><strong>Лимиты</strong> — ограничение задач в статусах. Вынуждают заканчивать начатое.</li>
+<li><strong>Классы</strong> — приоритеты/типы задач по срочности и ценности.</li>
+<li><strong>Метрики</strong> — количественные показатели для анализа.</li>
+</ol>`
+      },
+      {
+        q: "DoR и DoD — что это такое?",
+        a: `<ul>
+<li><strong>DoR (Definition of Ready)</strong> — список условий к элементу бэклога, позволяющих взять его в работу. Вопрос: «Всё есть, чтобы не отвлекаться?»</li>
+<li><strong>DoD (Definition of Done)</strong> — список условий к инкременту, при выполнении которых задача считается готовой. Вопрос: «Всё сделано качественно?»</li>
+</ul>`
+      },
+      {
+        q: "Чем занимаются тестировщики в начале спринта?",
+        a: `<ol>
+<li>Дотестировать «хвосты» с предыдущего спринта.</li>
+<li>Протестировать требования к задачам текущего спринта.</li>
+<li>Составить план тестирования и чек-листы.</li>
+<li>Писать тест-кейсы, пополнять регресс.</li>
+<li>Пополнять коллекции в Postman.</li>
+<li>Сторонние обязанности: поддержка, документация, release notes.</li>
+</ol>
+<div class="tip"><strong>Совет:</strong> Смокаем каждую таску перед началом тестирования!</div>`
+      },
+      {
+        q: "Как мы понимаем, что тестирование завершено?",
+        a: `<ol>
+<li>Выполнены критерии приёмки.</li>
+<li>Тестовый план полностью выполнен.</li>
+<li>Все найденные баги пофикшены или принято решение ехать с ними.</li>
+</ol>`
+      }
+    ]
+  },
+  {
+    section: "Клиент-серверная архитектура",
+    num: "02",
+    items: [
+      {
+        q: "Что такое клиент-серверная архитектура?",
+        a: `<p>Модель взаимодействия компонентов системы, где один компонент — <strong>сервер</strong>, другой — <strong>клиент</strong>. Клиент посылает запрос, сервер отвечает и при необходимости запрашивает данные в базе данных.</p>
+<h4>Компоненты</h4>
+<ul>
+<li><strong>Клиент</strong> — устройство или приложение пользователя, отсылает запросы и принимает ответы.</li>
+<li><strong>Сервер</strong> — хранит приложение, весь код и логику. Может быть <em>кластером серверов</em> для повышения отказоустойчивости.</li>
+<li><strong>Базы данных</strong> — хранилища на серверной стороне для хранения, изменения, извлечения и удаления информации.</li>
+<li><strong>Балансировщик</strong> — необязательный компонент для распределения нагрузки.</li>
+</ul>`
+      },
+      {
+        q: "Чем отличается тонкий клиент от толстого?",
+        a: `<p>Отличие — где физически выполняется большая часть вычислений.</p>
+<ul>
+<li><strong>Тонкий клиент</strong> — основная нагрузка на сервере, очень зависим от сети. Примеры: Google Docs, Netflix, онлайн-банкинг.</li>
+<li><strong>Толстый клиент</strong> — основная бизнес-логика на стороне клиента, может работать автономно. Примеры: Microsoft Word, Photoshop.</li>
+</ul>`
+      }
+    ]
+  },
+  {
+    section: "REST & SOAP",
+    num: "03",
+    items: [
+      {
+        q: "Что такое REST? Основные принципы REST API",
+        a: `<p><strong>REST</strong> — архитектурный стиль, описывающий правила взаимодействия с API. Приложения, строго следующие REST, называются <em>RESTful API</em>.</p>
+<p><strong>API</strong> (Application Programming Interface) — правила и способ общения одной программы с другой.</p>
+<h4>6 принципов REST</h4>
+<ol>
+<li><strong>Отделение клиента от сервера (Client-Server)</strong> — код запросов на клиенте, код доступа к данным на сервере.</li>
+<li><strong>Отсутствие записи состояния клиента (Stateless)</strong> — сервер не хранит состояние клиента. Каждый запрос содержит всё необходимое.</li>
+<li><strong>Кэшируемость (Cacheable)</strong> — данные могут кэшироваться для ускорения доступа.</li>
+<li><strong>Единообразие интерфейса REST (Uniform Interface)</strong> — данные запрашиваются через один URL стандартными протоколами (HTTP).</li>
+<li><strong>Многоуровневость системы (Layered System)</strong> — серверы на разных уровнях, каждый взаимодействует только с ближайшими.</li>
+<li><strong>Предоставление кода по запросу (Code on Demand)</strong> — серверы могут отправлять код клиенту по запросу.</li>
+</ol>
+<div class="tip"><strong>Главное отличие REST от SOAP:</strong> REST — архитектурный подход, SOAP — протокол на основе XML.</div>`
+      },
+      {
+        q: "Что такое SOAP? Из чего состоит?",
+        a: `<p><strong>SOAP</strong> (Simple Object Access Protocol) — протокол обмена структурированными сообщениями на основе XML.</p>
+<h4>Структура SOAP-XML</h4>
+<ul>
+<li><strong>Envelope (Конверт)</strong> — корневой элемент, определяет сообщение.</li>
+<li><strong>Header (Заголовок)</strong> — атрибуты сообщения (безопасность, маршрутизация).</li>
+<li><strong>Body (Тело)</strong> — само сообщение, которым обмениваются приложения.</li>
+<li><strong>Fault</strong> — необязательный элемент с информацией об ошибках.</li>
+</ul>
+<div class="tip">SOAP использует <strong>WSDL</strong> (Web Services Description Language) — XML-язык для описания веб-сервисов.</div>`
+      }
+    ]
+  },
+  {
+    section: "Монолит и микросервисы",
+    num: "04",
+    items: [
+      {
+        q: "Монолитная архитектура — плюсы и минусы",
+        a: `<p>Это способ построения приложения, когда все его компоненты (UI, бизнес-логика, БД) собраны в одну большую программу и работают как единое целое.</p>
+<h4>Плюсы</h4>
+<ul>
+<li>Простота разработки — один код, один репозиторий.</li>
+<li>Лёгкое тестирование — можно проверить всё сразу.</li>
+<li>Быстрое развёртывание — один исполняемый файл.</li>
+<li>Высокая производительность — нет задержек между сервисами.</li>
+<li>Проще отладка — все логи в одном месте.</li>
+</ul>
+<h4>Минусы</h4>
+<ul>
+<li>Проблемы с масштабированием — нельзя масштабировать только часть.</li>
+<li>Риск полного отказа — ошибка в одном модуле роняет всё.</li>
+<li>Сложность внедрения новых технологий — изменения затрагивают весь проект.</li>
+<li>Долгие обновления — даже мелкие правки требуют пересборки.</li>
+<li>Ограниченная гибкость — всё жёстко связано.</li>
+</ul>`
+      },
+      {
+        q: "Микросервисная архитектура — плюсы и минусы",
+        a: `<p>Это способ построения приложения, когда оно разделено на множество мелких, независимых программ (сервисов). Каждая занимается только своим делом, и они общаются друг с другом по сети (через API).</p>
+<h4>Плюсы</h4>
+<ul>
+<li>Гибкость, масштабируемость, быстрые обновления (несколько раз в день).</li>
+<li>Независимость — каждый сервис обновляется отдельно.</li>
+<li>Надёжность — падение одного сервиса не ломает всё.</li>
+</ul>
+<h4>Минусы</h4>
+<ul>
+<li>Сложнее управлять — много сервисов, путаница.</li>
+<li>Дорогая инфраструктура — каждый сервис требует настроек.</li>
+<li>Труднее искать баги — ошибки могут быть в нескольких сервисах.</li>
+<li>Нет единых стандартов — каждая команда использует свои технологии.</li>
+</ul>
+<h4>Взаимодействие микросервисов</h4>
+<p>Через <strong>API</strong> и <strong>брокер сообщений</strong> (центральный роутер для координации).</p>`
+      }
+    ]
+  },
+  {
+    section: "STLC",
+    num: "05",
+    items: [
+      {
+        q: "Что такое STLC, основные этапы?",
+        a: `<p><strong>STLC</strong> (Software Testing Life Cycle) — жизненный цикл тестирования ПО: последовательные этапы для обеспечения качества.</p>
+<ol>
+<li><strong>Анализ требований</strong> — что тестировать.</li>
+<li><strong>Планирование</strong> — стратегия, инструменты, сроки.</li>
+<li><strong>Разработка чек-листов/тест-кейсов</strong> — создание сценариев проверки.</li>
+<li><strong>Подготовка тестовой среды</strong> — настройка окружения.</li>
+<li><strong>Выполнение тестов</strong> — запуск, баг-фиксация.</li>
+<li><strong>Завершение</strong> — отчёт, выводы о качестве.</li>
+</ol>`
+      },
+      {
+        q: "7 основных принципов тестирования",
+        a: `<ol>
+<li><strong>Тестирование показывает дефекты</strong> — но не гарантирует полного их отсутствия.</li>
+<li><strong>Исчерпывающее тестирование невозможно</strong> — нельзя проверить все комбинации данных.</li>
+<li><strong>Раннее тестирование</strong> — чем раньше начать, тем дешевле исправлять ошибки.</li>
+<li><strong>Скопление дефектов</strong> — большинство багов сконцентрировано в нескольких модулях.</li>
+<li><strong>Парадокс пестицида</strong> — одни и те же тесты перестают находить новые дефекты.</li>
+<li><strong>Тестирование зависит от контекста</strong> — подходы различаются (банк vs. сайт-визитка).</li>
+<li><strong>Заблуждение об отсутствии ошибок</strong> — даже без багов система может быть неудобной.</li>
+</ol>`
+      },
+      {
+        q: "Что такое требования и их атрибуты?",
+        a: `<p><strong>Требования</strong> — чёткое описание того, что система должна делать, какими свойствами обладать и каким условиям соответствовать.</p>
+<h4>9 характеристик качественного требования</h4>
+<ol>
+<li><strong>Корректность</strong> — точно отражает потребности заказчика.</li>
+<li><strong>Однозначность</strong> — исключает двусмысленности («быстро» → «реакция < 2 сек»).</li>
+<li><strong>Полнота</strong> — содержит все необходимые детали (входы, выходы, условия).</li>
+<li><strong>Непротиворечивость</strong> — не конфликтует с другими требованиями.</li>
+<li><strong>Проверяемость</strong> — можно объективно проверить тестами.</li>
+<li><strong>Атомарность</strong> — описывает одну функциональность.</li>
+<li><strong>Актуальность</strong> — соответствует текущим нуждам бизнеса.</li>
+<li><strong>Трассируемость</strong> — связь с тест-кейсами, задачами.</li>
+<li><strong>Реализуемость</strong> — технически и экономически выполнимо.</li>
+</ol>`
+      },
+      {
+        q: "Метрики тестирования — что это и для чего?",
+        a: `<h4>Основные метрики</h4>
+<ul>
+<li><strong>Passed/Failed Test Cases</strong> — соотношение пройденных и упавших тестов.</li>
+<li><strong>Not Run Test Cases</strong> — количество тестов, которые нужно выполнить.</li>
+<li><strong>Open/Closed Bugs</strong> — соотношение открытых и закрытых багов.</li>
+<li><strong>Reopened/Closed Bugs</strong> — переоткрытые к закрытым.</li>
+<li><strong>Bugs by Severity/Priority</strong> — количество багов по серьёзности/приоритету.</li>
+<li><strong>Баги в проде</strong> — одна из важнейших метрик.</li>
+</ul>
+<h4>Для чего нужны?</h4>
+<ul>
+<li>Улучшение и оптимизация процессов.</li>
+<li>Контроль процесса тестирования.</li>
+<li>Оценка качества продукта.</li>
+<li>Принятие обоснованных решений о готовности к релизу.</li>
+</ul>`
+      }
+    ]
+  },
+  {
+    section: "Виды тестирования",
+    num: "06",
+    items: [
+      {
+        q: "Функциональное vs нефункциональное тестирование",
+        a: `<p><strong>Функциональное</strong> — проверяет, соответствует ли ПО требованиям и корректно ли работают его функции. Проверяет: основные функции, работу с данными, интеграцию, обработку ошибок.</p>
+<p><strong>Нефункциональное</strong> — проверяет <em>КАК</em> система работает. Оценивает: безопасность, UI, юзабилити, локализацию, конфигурацию, совместимость, установку, отказоустойчивость, производительность, нагрузку, стресс.</p>
+<div class="tip"><strong>Ключевое отличие:</strong> нефункциональное не проверяет бизнес-логику, а оценивает как <em>быстро, безопасно, удобно и стабильно</em> система работает.</div>`
+      },
+      {
+        q: "Тестирование чёрного, белого и серого ящика",
+        a: `<ul>
+<li><strong>Белый ящик (White Box)</strong> — полный доступ к коду проекта. Внутренняя структура известна тестировщику.</li>
+<li><strong>Серый ящик</strong> — частичный доступ к коду (например, знаем схему базы данных или список команд API, но не весь код).</li>
+<li><strong>Чёрный ящик (Black Box)</strong> — нет доступа к системе. Тестирование только через внешний интерфейс, основанное на спецификации.</li>
+</ul>`
+      },
+      {
+        q: "Дымовое, санити, регрессионное, ретест — в чём разница?",
+        a: `<ul>
+<li><strong>Smoke Testing (Дымовое)</strong> — быстрая проверка <em>основных</em> функций после сборки. Направлено вширь: покрыть максимум функционала за минимум времени.</li>
+<li><strong>Sanity Testing (Санити)</strong> — глубокое исследование <em>конкретной</em> функции. Направлено вглубь.</li>
+<li><strong>Regression Testing</strong> — повторная проверка функционала после изменений в коде. Убедиться, что новые правки не сломали существующее.</li>
+<li><strong>Re-testing (Подтверждающее)</strong> — проверка, что конкретный дефект был исправлен.</li>
+<li><strong>BVT (Build Verification Test)</strong> — проверка соответствия сборки критериям качества для начала тестирования. Аналог Smoke.</li>
+</ul>`
+      },
+      {
+        q: "5 классификаций видов тестирования (по уровню, характеру и др.)",
+        a: `<ol>
+<li><strong>По уровню</strong> — Модульное, Интеграционное, Системное, Приёмочное.</li>
+<li><strong>По характеру сценария</strong> — Позитивное, Негативное.</li>
+<li><strong>По степени формализации</strong> — На основе тест-кейсов, Исследовательское, Свободное.</li>
+<li><strong>По запуску кода</strong> — Статическое (без запуска), Динамическое (с запуском).</li>
+<li><strong>По степени автоматизации</strong> — Ручное, Автоматизированное.</li>
+</ol>`
+      }
+    ]
+  },
+  {
+    section: "Пирамида тестирования",
+    num: "07",
+    items: [
+      {
+        q: "Что такое пирамида тестирования?",
+        a: `<p><strong>Пирамида тестирования</strong> — схема оптимального количества тестов на разных уровнях.</p>
+<p>Снизу вверх (от большего к меньшему):</p>
+<ol>
+<li><strong>Модульное (Unit)</strong> — проверка минимального модуля ПО.</li>
+<li><strong>Интеграционное</strong> — несколько модулей тестируются вместе.</li>
+<li><strong>Системное</strong> — тестируется весь продукт.</li>
+<li><strong>Приёмочное</strong> — ПО принимается заказчиком / end-to-end сценарии.</li>
+</ol>
+<div class="tip">Тесты более высокого уровня проверяют только то, что невозможно проверить на предыдущих уровнях.</div>`
+      },
+      {
+        q: "Почему одни уровни пирамиды шире/уже, выше/ниже?",
+        a: `<p><strong>Ширина</strong> отражает количество тестов. Чем шире — тем больше тестов.</p>
+<p><strong>Высота</strong> — чем выше уровень, тем тесты:</p>
+<ul>
+<li>Медленнее (дольше выполняются).</li>
+<li>Важнее для бизнеса.</li>
+<li>Дороже в разработке и поддержке.</li>
+<li>Менее изолированы (зависят от большего числа компонентов).</li>
+<li>Их меньше в проекте.</li>
+</ul>`
+      },
+      {
+        q: "Белый/серый/чёрный ящик на разных уровнях пирамиды",
+        a: `<ul>
+<li><strong>Модульный уровень</strong> — <em>белый ящик</em>. Разработчик знает, что принимает и отдаёт минимальная единица кода.</li>
+<li><strong>Интеграционный уровень</strong> — <em>серый или чёрный ящик</em>. Функциональные и нефункциональные проверки.</li>
+<li><strong>Системный уровень</strong> — <em>чёрный ящик</em>. Верификация требований.</li>
+<li><strong>Приёмочный уровень</strong> — <em>чёрный ящик</em>. Валидация требований (проверка в целом, не только по спецификации).</li>
+</ul>
+<div class="tip">Юнит-тесты пишут разработчики. Баг-репорт на этом уровне не создаётся — разработчик находит, правит и проверяет самостоятельно. Тестирование API относится к <strong>интеграционному</strong> уровню.</div>`
+      }
+    ]
+  },
+  {
+    section: "Техники тест-дизайна",
+    num: "08",
+    items: [
+      {
+        q: "Техника эквивалентных классов",
+        a: `<p>Метод тестирования, который <strong>сокращает количество тестов</strong>, группируя входные данные в классы с одинаковым ожидаемым поведением. Достаточно одного теста на класс.</p>
+<h4>Пример: пароль от 8 до 15 символов</h4>
+<ul>
+<li><span class="badge badge-red">Неверный</span> — менее 8 символов</li>
+<li><span class="badge badge-green">Верный</span> — 8–15 символов</li>
+<li><span class="badge badge-red">Неверный</span> — более 15 символов</li>
+</ul>
+<h4>Польза</h4>
+<ul>
+<li>Сокращение количества тест-кейсов.</li>
+<li>Системный подход, меньше случайных проверок.</li>
+<li>Упрощение поддержки тестов.</li>
+</ul>`
+      },
+      {
+        q: "Техника граничных значений",
+        a: `<p>Проверка ошибок <strong>на границах</strong> классов эквивалентности. Программа чаще всего ломается именно там.</p>
+<h4>По ISTQB (4 значения на каждой границе)</h4>
+<ul>
+<li>Нижняя граница − 1</li>
+<li>Нижняя граница</li>
+<li>Верхняя граница</li>
+<li>Верхняя граница + 1</li>
+</ul>
+<h4>С расширенным покрытием (6 значений)</h4>
+<ul>
+<li>Нижняя − 1, нижняя, нижняя + 1, верхняя − 1, верхняя, верхняя + 1</li>
+</ul>
+<div class="tip"><strong>Важно!</strong> Сначала определите ШАГ — минимальную разницу между двумя соседними значениями. Например, для рублей шаг = 1 руб., для копеек = 0.01.</div>`
+      },
+      {
+        q: "Техника попарного тестирования (Pairwise)",
+        a: `<p>Если много параметров — тестируем все возможные <strong>пары</strong> параметров вместо всех комбинаций. 70–90% дефектов связаны с парами параметров.</p>
+<h4>Польза</h4>
+<ul>
+<li>Резкое сокращение числа тестов.</li>
+<li>Экономия времени.</li>
+<li>Высокая эффективность — ловит большинство багов.</li>
+<li>Максимальное покрытие за минимум тестов.</li>
+</ul>
+<p>Идеально для: сложных систем с множеством параметров, тестирования совместимости, проектов с ограниченными ресурсами.</p>
+<h4>Пример: поиск авиабилетов</h4>
+<p>3 параметра по 2 значения: <strong>Город</strong> (Москва / Сочи), <strong>Класс</strong> (Эконом / Бизнес), <strong>Багаж</strong> (Есть / Нет).</p>
+<table class="severity-table">
+<tr><td><strong>Тест</strong></td><td><strong>Город</strong></td><td><strong>Класс</strong></td><td><strong>Багаж</strong></td></tr>
+<tr><td>1</td><td>Москва</td><td>Эконом</td><td>Есть</td></tr>
+<tr><td>2</td><td>Москва</td><td>Бизнес</td><td>Нет</td></tr>
+<tr><td>3</td><td>Сочи</td><td>Эконом</td><td>Нет</td></tr>
+<tr><td>4</td><td>Сочи</td><td>Бизнес</td><td>Есть</td></tr>
+</table>
+<div class="tip">Полный перебор = 8 тестов. Попарно = 4 теста. Каждая пара значений встречается хотя бы раз — ~90% багов будут найдены.</div>`
+      },
+      {
+        q: "Схема переходов и состояний",
+        a: `<p>Графическое представление того, как система меняет <strong>состояния</strong> под действием <strong>событий</strong>.</p>
+<h4>Пример: заказ в магазине</h4>
+<ul>
+<li>Состояния: <code>Корзина</code> → <code>Оплачен</code> → <code>Доставлен</code> → <code>Возврат</code></li>
+<li>Переходы: «Оплата прошла» переводит из Корзины в Оплачен.</li>
+</ul>
+<p>Формат: кружки (состояния) + стрелки (переходы). Помогает видеть логику и избегать ошибок (нельзя доставить неоплаченный заказ).</p>`
+      },
+      {
+        q: "Таблица принятия решений и исследовательское тестирование",
+        a: `<p><strong>Таблица принятия решений</strong> — слева условия (вопросы «да/нет»), сверху — варианты ответов, на пересечении — что программа делает. Помогает не запутаться в сложной логике.</p>
+<h4>Пример: скидка в интернет-магазине</h4>
+<p>Скидка 10% даётся, если пользователь зарегистрирован <strong>и</strong> сумма заказа от 1000 ₽.</p>
+<table class="severity-table">
+<tr><td><strong>Условие</strong></td><td><strong>Тест 1</strong></td><td><strong>Тест 2</strong></td><td><strong>Тест 3</strong></td><td><strong>Тест 4</strong></td></tr>
+<tr><td>Зарегистрирован?</td><td>Да</td><td>Да</td><td>Нет</td><td>Нет</td></tr>
+<tr><td>Заказ от 1000 ₽?</td><td>Да</td><td>Нет</td><td>Да</td><td>Нет</td></tr>
+<tr><td><strong>Результат</strong></td><td><span class="badge badge-green">Скидка 10%</span></td><td><span class="badge badge-gray">Без скидки</span></td><td><span class="badge badge-gray">Без скидки</span></td><td><span class="badge badge-gray">Без скидки</span></td></tr>
+</table>
+<p><strong>Исследовательское тестирование</strong> — тестирование без заранее составленных тест-кейсов. Изучение системы и генерация тестов «на лету» одновременно с исследованием поведения.</p>`
+      }
+    ]
+  },
+  {
+    section: "DevTools",
+    num: "09",
+    items: [
+      {
+        q: "Вкладка Elements — что там смотреть?",
+        a: `<p>Вкладка Elements показывает HTML-структуру страницы и CSS-стили каждого элемента. Для QA это главный инструмент проверки вёрстки и UI-багов.</p>
+<h4>Как пользоваться</h4>
+<ul>
+<li><strong>Выбрать элемент на странице</strong> — нажми иконку курсора (или <code>Ctrl+Shift+C</code>), кликни на любой элемент на странице — DevTools сразу покажет его в дереве HTML.</li>
+<li><strong>Проверить текст и атрибуты</strong> — убедиться, что текст, ссылки, placeholder, alt у картинок соответствуют требованиям.</li>
+<li><strong>Проверить стили (вкладка Styles)</strong> — видно все CSS-свойства элемента: цвет, шрифт, отступы. Можно временно менять значения прямо в браузере и сразу видеть результат — удобно для воспроизведения и описания UI-бага.</li>
+<li><strong>Проверить отступы (вкладка Computed)</strong> — наглядная схема margin / border / padding / content. Помогает выявить проблемы с выравниванием и пустым пространством.</li>
+<li><strong>Проверить адаптивность</strong> — кнопка Toggle Device Toolbar (<code>Ctrl+Shift+M</code>) переключает страницу в режим мобильного устройства. Можно выбрать конкретную модель телефона или задать произвольное разрешение.</li>
+</ul>
+<div class="tip"><strong>Частый сценарий:</strong> вёрстка «поехала» — выбираешь элемент, смотришь в Styles, находишь лишний margin или неверный z-index и описываешь баг с точным указанием свойства.</div>`
+      },
+      {
+        q: "Вкладка Console — что там смотреть?",
+        a: `<p>Console — это журнал всего, что происходит в браузере на уровне JavaScript. Для QA это первое место, куда смотришь, когда что-то сломалось, но визуально непонятно что именно.</p>
+<h4>Как пользоваться</h4>
+<ul>
+<li><strong>Смотреть ошибки после действия</strong> — сделал шаг (нажал кнопку, отправил форму) и сразу смотришь Console: появились ли красные строки с <code>Error</code>. Если да — копируешь текст ошибки в баг-репорт.</li>
+<li><strong>Следить за предупреждениями</strong> — жёлтые строки <code>Warning</code> не ломают страницу, но могут указывать на потенциальные проблемы, которые стоит упомянуть разработчику.</li>
+<li><strong>Проверять сетевые ошибки</strong> — если API-запрос упал, Console покажет <code>Failed to fetch</code> или статус вроде <code>404 / 500</code>. Это помогает быстро понять, фронтенд сломан или бэкенд.</li>
+<li><strong>Очищать перед тестом</strong> — кнопка 🚫 (Clear console) или <code>Ctrl+L</code>. Так старые ошибки не смешиваются с новыми и легче отследить, что именно вызвало проблему.</li>
+</ul>
+<div class="tip"><strong>Частый сценарий:</strong> кнопка не реагирует на клик — открываешь Console, видишь <code>TypeError: cannot read properties of undefined</code>, копируешь в баг-репорт. Разработчику сразу понятно, где искать.</div>`
+      },
+      {
+        q: "Вкладка Network — что там смотреть?",
+        a: `<p>Network — это журнал всех запросов между браузером и сервером. Для QA это главный инструмент при тестировании API и поиске причин, почему данные не загружаются или отправляются неверно.</p>
+<h4>Как пользоваться</h4>
+<ul>
+<li><strong>Открыть до действия</strong> — вкладка Network должна быть открыта <em>до</em> того, как ты нажимаешь кнопку или загружаешь страницу, иначе запросы не запишутся. Чекбокс «Preserve log» сохраняет историю при переходах между страницами.</li>
+<li><strong>Найти нужный запрос</strong> — фильтр <code>Fetch/XHR</code> показывает только API-запросы, убирая лишние картинки и скрипты. Можно искать по имени в строке поиска.</li>
+<li><strong>Проверить статус ответа</strong> — колонка Status: <code>200</code> — всё хорошо, <code>4xx</code> — ошибка на стороне клиента, <code>5xx</code> — ошибка сервера. Красные строки сразу бросаются в глаза.</li>
+<li><strong>Посмотреть тело запроса и ответа</strong> — кликаешь на запрос → вкладка <strong>Payload</strong> (что отправили) и <strong>Response</strong> (что вернул сервер). Здесь видно реальные данные: помогает понять, правильно ли фронтенд передаёт параметры и то ли возвращает бэкенд.</li>
+<li><strong>Проверить заголовки</strong> — вкладка <strong>Headers</strong>: токен авторизации, тип контента, куки. Полезно при тестировании авторизации и прав доступа.</li>
+<li><strong>Имитировать медленный интернет</strong> — выпадающий список «No throttling» → выбрать <code>Slow 3G</code>. Помогает проверить, как приложение ведёт себя при плохом соединении: есть ли лоадеры, не падает ли запрос по таймауту.</li>
+</ul>
+<div class="tip"><strong>Частый сценарий:</strong> нажал «Оплатить» — ничего не произошло. Открываешь Network, находишь запрос к <code>/api/payment</code>, видишь статус <code>422</code> и в Response — текст ошибки валидации. Готово, баг-репорт можно писать.</div>`
+      },
+      {
+        q: "Вкладка Application — что там смотреть?",
+        a: `<p>Application — это хранилище всего, что браузер сохраняет на стороне клиента. Для QA полезна при тестировании авторизации, сессий, персонализации и поведения приложения после очистки данных.</p>
+<h4>Как пользоваться</h4>
+<ul>
+<li><strong>Cookies</strong> — хранят токены сессии, настройки языка, данные корзины. Можно проверить, что нужные куки выставляются после входа, посмотреть их срок жизни (<code>Expires</code>), флаги <code>HttpOnly</code> и <code>Secure</code>. Удалить куки вручную — быстрый способ симулировать выход из аккаунта без кнопки «Выйти».</li>
+<li><strong>Local Storage</strong> — постоянное хранилище в браузере, не исчезает при закрытии вкладки. Часто хранит токены авторизации или пользовательские настройки. Полезно проверить, что при выходе из аккаунта данные очищаются, а не остаются.</li>
+<li><strong>Session Storage</strong> — то же самое, но живёт только пока открыта вкладка. Закрыл — данные исчезли. Используется для временных состояний (например, шаги оформления заказа).</li>
+<li><strong>Очистить хранилище</strong> — кнопка «Clear site data» удаляет сразу всё: куки, Local Storage, кэш. Удобно для тестирования поведения приложения «с чистого листа» без режима инкогнито.</li>
+</ul>
+<div class="tip"><strong>Частый сценарий:</strong> после выхода из аккаунта пользователь снова оказывается залогинен. Открываешь Application → Local Storage — видишь, что токен не удалился. Вот твой баг.</div>`
+      },
+      {
+        q: "Кэш и Куки — что это, зачем тестировщику?",
+        a: `<p><strong>Кэш</strong> — временное хранилище файлов (фото, стили, скрипты). Ускоряет загрузку, экономит трафик. При тестировании мешает — браузер подсовывает старые файлы. Чистить: <code>Ctrl+F5</code> или через DevTools.</p>
+<p><strong>Куки</strong> — маленькие текстовые файлы для хранения данных сессии, настроек, корзины. Сайт отправляет куки при первом посещении, браузер возвращает их при каждом следующем.</p>
+<div class="tip"><strong>Тестировщику важно:</strong> чистить кэш, чтобы не путать старые данные с новыми изменениями в приложении.</div>`
+      }
+    ]
+  },
+  {
+    section: "Тестовая документация",
+    num: "10",
+    items: [
+      {
+        q: "Чек-лист vs тест-кейс — в чём разница?",
+        a: `<p><strong>Чек-лист</strong> — документ с кратким описанием функций для проверки. Краткий формат без детализации шагов.</p>
+<p><strong>Тест-кейс</strong> — документ, описывающий тест: как выполнить, при каких условиях и каков ожидаемый результат. Один тест-кейс — одна конкретная функция или сценарий.</p>
+<h4>Обязательные поля тест-кейса</h4>
+<ol>
+<li><strong>ID</strong> — уникальный номер.</li>
+<li><strong>Заголовок (Name)</strong> — короткое и понятное название.</li>
+<li><strong>Предварительные условия (Precondition)</strong> — что нужно сделать перед тестом.</li>
+<li><strong>Шаги (Steps)</strong> — точная последовательность действий.</li>
+<li><strong>Ожидаемый результат (Expected Result)</strong> — что должно получиться.</li>
+</ol>`
+      },
+      {
+        q: "Баг-репорт — структура и правила написания",
+        a: `<p><strong>Баг-репорт</strong> — технический документ, подробно описывающий ошибку для её устранения разработчиками.</p>
+<h4>Обязательные поля</h4>
+<ol>
+<li><strong>ID</strong> — уникальный номер (автоматически).</li>
+<li><strong>Название (Title)</strong> — краткое описание проблемы.</li>
+<li><strong>Шаги воспроизведения (Steps to Reproduce)</strong> — точная последовательность.</li>
+<li><strong>Фактический результат (Actual Result)</strong> — что пошло не так.</li>
+<li><strong>Ожидаемый результат (Expected Result)</strong> — как должно было работать.</li>
+</ol>
+<div class="tip"><strong>Хорошее название отвечает на 3 вопроса:</strong><br>
+<strong>Что?</strong> — что сломалось.<br>
+<strong>Где?</strong> — в каком компоненте.<br>
+<strong>Когда?</strong> — при каких условиях.</div>
+<h4>Необязательные (желательные) поля</h4>
+<ul>
+<li>Среда (Environment), Severity, Priority, Скриншоты/логи.</li>
+</ul>`
+      }
+    ]
+  },
+  {
+    section: "HTTP-запросы",
+    num: "11",
+    items: [
+      {
+        q: "HTTP vs HTTPS — в чём разница?",
+        a: `<ul>
+<li><strong>HTTP</strong> — открытый протокол передачи данных. Порт <code>80</code>. Данные не защищены.</li>
+<li><strong>HTTPS</strong> — HTTP + шифрование (SSL/TLS). Порт <code>443</code>. Обеспечивает конфиденциальность.</li>
+</ul>
+<h4>Структура HTTP-запроса</h4>
+<ul>
+<li><strong>Стартовая строка</strong> — метод + URL + версия HTTP.</li>
+<li><strong>Заголовки</strong> — метаданные о запросе.</li>
+<li><strong>Пустая строка</strong> — разделитель заголовков и тела.</li>
+<li><strong>Тело</strong> (опционально) — данные. Отсутствует у GET, HEAD, DELETE.</li>
+</ul>`
+      },
+      {
+        q: "5 основных методов HTTP-запросов",
+        a: `<ul>
+<li><span class="badge badge-blue">GET</span> — получение ресурса (только чтение). Параметры в URL.</li>
+<li><span class="badge badge-green">POST</span> — создание нового ресурса по данным из тела запроса.</li>
+<li><span class="badge badge-yellow">PUT</span> — создание или <em>полная</em> замена существующего ресурса.</li>
+<li><span class="badge badge-orange">PATCH</span> — частичное изменение ресурса.</li>
+<li><span class="badge badge-red">DELETE</span> — удаление указанного ресурса.</li>
+</ul>
+<div class="tip"><strong>Query-параметры</strong> — часть URL после <code>?</code> в формате <code>ключ=значение&ключ2=значение2</code>.</div>`
+      },
+      {
+        q: "Идемпотентность — что это?",
+        a: `<p>Метод <strong>идемпотентен</strong>, если повторный вызов с теми же данными не изменяет состояние системы после первого выполнения.</p>
+<h4>Идемпотентные методы</h4>
+<ul>
+<li><code>GET</code> — не меняет сервер.</li>
+<li><code>PUT</code> — повторные вызовы не создают новые ресурсы.</li>
+<li><code>DELETE</code> — после первого удаления ресурса его нет, повторные вызовы ничего не меняют.</li>
+</ul>
+<h4>Неидемпотентные методы</h4>
+<ul>
+<li><code>POST</code> — каждый вызов создаёт новый ресурс.</li>
+<li><code>PATCH</code> (не всегда) — может зависеть от текущего состояния.</li>
+</ul>`
+      },
+      {
+        q: "Коды ответов HTTP — что значат?",
+        a: `<table class="severity-table">
+<tr><td><span class="badge badge-blue">1xx</span></td><td>Информационные</td></tr>
+<tr><td><span class="badge badge-green">200</span></td><td>OK — данные успешно получены</td></tr>
+<tr><td><span class="badge badge-green">201</span></td><td>Created — запрос успешен, данные созданы</td></tr>
+<tr><td><span class="badge badge-green">202</span></td><td>Accepted — запрос принят, но ещё не завершён</td></tr>
+<tr><td><span class="badge badge-green">204</span></td><td>No Content — успех, но тела ответа нет</td></tr>
+<tr><td><span class="badge badge-blue">301</span></td><td>Moved Permanently — ресурс перемещён навсегда</td></tr>
+<tr><td><span class="badge badge-blue">304</span></td><td>Not Modified — ресурс не изменился, используй кэш</td></tr>
+<tr><td><span class="badge badge-orange">400</span></td><td>Bad Request — неверно сформированный запрос</td></tr>
+<tr><td><span class="badge badge-orange">401</span></td><td>Unauthorized — нужна аутентификация</td></tr>
+<tr><td><span class="badge badge-orange">403</span></td><td>Forbidden — нет прав доступа</td></tr>
+<tr><td><span class="badge badge-orange">404</span></td><td>Not Found — ресурс не обнаружен</td></tr>
+<tr><td><span class="badge badge-orange">405</span></td><td>Method Not Allowed — метод не поддерживается</td></tr>
+<tr><td><span class="badge badge-orange">409</span></td><td>Conflict — конфликт с текущим состоянием ресурса</td></tr>
+<tr><td><span class="badge badge-orange">422</span></td><td>Unprocessable Entity — запрос понят, но не может быть обработан из-за ошибок валидации (например, неверный формат данных в теле запроса)</td></tr>
+<tr><td><span class="badge badge-red">500</span></td><td>Internal Server Error — сервер не смог обработать</td></tr>
+<tr><td><span class="badge badge-red">502</span></td><td>Bad Gateway — ошибка шлюза</td></tr>
+<tr><td><span class="badge badge-red">503</span></td><td>Service Unavailable — сервис временно недоступен</td></tr>
+<tr><td><span class="badge badge-red">504</span></td><td>Gateway Timeout — шлюз не дождался ответа</td></tr>
+</table>`
+      }
+    ]
+  },
+  {
+    section: "Базы данных",
+    num: "12",
+    items: [
+      {
+        q: "Что такое база данных? Из чего состоят таблицы?",
+        a: `<p><strong>База данных (БД)</strong> — организованное хранилище цифровой информации. Позволяет хранить, изменять, извлекать и удалять информацию.</p>
+<p><strong>Реляционная БД</strong> — табличная организация с предопределёнными связями:</p>
+<ul>
+<li><strong>Столбец</strong> — хранит определённый тип данных.</li>
+<li><strong>Строка</strong> — набор связанных значений одной сущности.</li>
+<li><strong>Ячейка</strong> — значение конкретного атрибута.</li>
+</ul>
+<h4>Ключи</h4>
+<ul>
+<li><strong>Первичный ключ (PK)</strong> — уникально идентифицирует каждую запись. Никогда не <code>NULL</code>.</li>
+<li><strong>Внешний ключ (FK)</strong> — ссылается на PK другой таблицы. Обеспечивает связь между таблицами.</li>
+</ul>`
+      },
+      {
+        q: "SQL — что это? Базовые операторы",
+        a: `<p><strong>SQL</strong> — язык структурированных запросов для работы с реляционными БД. <strong>СУБД</strong> — системы управления базами данных.</p>
+<h4>Базовые операторы</h4>
+<ul>
+<li><code>INSERT INTO table (col1) VALUES (val1)</code> — вставка данных</li>
+<li><code>UPDATE table SET col = val WHERE condition</code> — обновление</li>
+<li><code>DELETE FROM table WHERE condition</code> — удаление</li>
+<li><code>SELECT * FROM table ORDER BY col ASC</code> — сортировка</li>
+<li><code>SELECT DISTINCT col FROM table</code> — уникальные значения</li>
+<li><code>SELECT COUNT(*) FROM table</code> — подсчёт строк</li>
+<li><code>SELECT SUM(col) FROM table</code> — сумма значений</li>
+<li><code>SELECT * FROM table LIMIT 10</code> — ограничение выборки</li>
+<li><code>SELECT * FROM t1 JOIN t2 ON t1.id = t2.id</code> — соединение таблиц</li>
+</ul>`
+      }
+    ]
+  },
+  {
+    section: "Брокер сообщений",
+    num: "13",
+    items: [
+      {
+        q: "Что такое брокер сообщений и для чего нужен?",
+        a: `<p><strong>Брокер сообщений</strong> — ПО-посредник для пересылки сообщений между компонентами в распределённой системе.</p>
+<h4>Зачем нужны?</h4>
+<ul>
+<li><strong>Асинхронная связь</strong> — работает даже при недоступности получателя.</li>
+<li><strong>Повышение производительности</strong> — разгружает систему фоновой обработкой.</li>
+<li><strong>Надёжная доставка</strong> — гарантируют, что сообщения не потеряются.</li>
+</ul>`
+      },
+      {
+        q: "Как работает Kafka?",
+        a: `<ul>
+<li><strong>Producer</strong> — отправляет сообщения в топик.</li>
+<li><strong>Consumer</strong> — читает сообщения из топиков.</li>
+<li><strong>Topic</strong> — логическая категория сообщений (например, <code>orders</code>).</li>
+<li><strong>Партиции</strong> — разделы топика для параллельной обработки.</li>
+<li><strong>Офсет</strong> — порядковый номер сообщения в партиции.</li>
+</ul>
+<p>Процесс: Producer → топик → партиции → Consumer читает по офсету.</p>
+<h4>Пример: фоновые задачи после оплаты заказа</h4>
+<p>Пользователь оплатил заказ и сразу видит «Оплата прошла успешно». Всё остальное система делает в фоне асинхронно через Kafka — чтобы не держать пользователя в ожидании.</p>
+<ol>
+<li><strong>Сервис платежей (Producer)</strong> получает подтверждение от платёжной системы и публикует событие «заказ оплачен» в топик <code>payments</code>.</li>
+<li><strong>Kafka</strong> сохраняет событие в топике <code>payments</code>.</li>
+<li><strong>Сервис заказов (Consumer)</strong> подписан на <code>payments</code> → обновляет статус заказа на «оплачено» → публикует событие в топик <code>orders</code>.</li>
+<li>Топик <code>orders</code> читают сразу три Consumer-а параллельно:
+  <ul>
+    <li><strong>Сервис уведомлений</strong> — отправляет SMS клиенту: «Ваш заказ успешно оплачен».</li>
+    <li><strong>Сервис доставки</strong> — формирует задачу на сбор и доставку заказа.</li>
+    <li><strong>Сервис склада</strong> — уменьшает остатки проданных товаров.</li>
+  </ul>
+</li>
+</ol>
+<div class="tip"><strong>Зачем Kafka?</strong> Сервис заказов не знает и не ждёт, кто подписан на <code>orders</code>. Если сервис уведомлений временно упал — сообщение никуда не денется, он обработает его когда «оживёт». Это и есть асинхронная надёжная доставка.</div>`
+      },
+      {
+        q: "Брокер vs API — главные отличия",
+        a: `<table class="severity-table">
+<tr><td><strong>Параметр</strong></td><td><strong>API</strong></td><td><strong>Брокер</strong></td></tr>
+<tr><td>Доступность</td><td>Получатель онлайн</td><td>Работает при недоступности</td></tr>
+<tr><td>Нагрузка</td><td>Мгновенная обработка</td><td>Постепенная обработка</td></tr>
+<tr><td>Надёжность</td><td>Данные могут потеряться</td><td>Гарантированная доставка</td></tr>
+<tr><td>Подписка</td><td>1 отправитель → 1 получатель</td><td>1 сообщение → много подписчиков</td></tr>
+</table>
+<div class="tip"><strong>Когда использовать:</strong> API → мгновенный ответ (проверка пароля). Брокер → события и фоновые задачи (отправка чека после оплаты).</div>`
+      }
+    ]
+  },
+  {
+    section: "Логи",
+    num: "14",
+    items: [
+      {
+        q: "Что такое логи и зачем тестировщику в них смотреть?",
+        a: `<p><strong>Логи</strong> — записи событий и сообщений, создаваемые программой во время работы. Источник информации о том, что происходит внутри приложения.</p>
+<h4>Зачем смотреть логи?</h4>
+<ul>
+<li>При тестировании новой фичи — отследить правильность операций.</li>
+<li>При проверке взаимодействия с БД, API — видеть запросы, ответы, коды.</li>
+<li>Для отладки — исключения, трассировка стека, сообщения об ошибках.</li>
+<li>Для оценки производительности — время операций, использование ресурсов.</li>
+</ul>`
+      },
+      {
+        q: "Уровни логирования",
+        a: `<table class="severity-table">
+<tr><td><span class="badge badge-red">FATAL</span></td><td>Критические ошибки, приводящие к остановке программы.</td></tr>
+<tr><td><span class="badge badge-orange">ERROR</span></td><td>Ошибки, нарушающие работу, но не останавливающие приложение.</td></tr>
+<tr><td><span class="badge badge-yellow">WARN</span></td><td>Потенциальные проблемы, требующие внимания.</td></tr>
+<tr><td><span class="badge badge-blue">INFO</span></td><td>Основные события работы приложения.</td></tr>
+<tr><td><span class="badge badge-green">DEBUG</span></td><td>Детали для отладки (запросы, время выполнения).</td></tr>
+<tr><td><span class="badge badge-gray">TRACE</span></td><td>Максимально подробная информация для разработки.</td></tr>
+</table>`
+      },
+      {
+        q: "Виды логов",
+        a: `<ul>
+<li><strong>Логи приложений</strong> — создаются самим приложением: ошибки, события, запросы, ответы.</li>
+<li><strong>Логи сервера</strong> — генерируются серверами. Делятся на Error logs и Access logs.</li>
+<li><strong>Системные логи</strong> — записываются ОС: работа ОС, системные события, процессы.</li>
+<li><strong>Логи БД</strong> — операции с данными: запросы, блокировки, репликация, бэкапы.</li>
+<li><strong>Логи безопасности</strong> — аутентификация, изменения прав, атаки, доступ к файлам.</li>
+<li><strong>Логи сетевых устройств</strong> — роутеры, коммутаторы, firewall. Передаются по syslog.</li>
+</ul>`
+      }
+    ]
+  },
+  {
+    section: "Процесс доступа к ресурсам",
+    num: "15",
+    items: [
+      {
+        q: "Идентификация, аутентификация, авторизация — в чём разница?",
+        a: `<ul>
+<li><strong>Идентификация</strong> — определение пользователя в системе (ввод логина/email). «Кто ты?»</li>
+<li><strong>Аутентификация</strong> — проверка подлинности личности (ввод пароля). «Докажи, что ты — это ты».</li>
+<li><strong>Авторизация</strong> — после аутентификации система определяет набор прав и привилегий. «Что тебе разрешено?»</li>
+</ul>
+<div class="tip"><strong>Пример:</strong> ввели логин → идентификация, ввели пароль → аутентификация, получили доступ к своим данным → авторизация.</div>`
+      },
+      {
+        q: "JWT и OAuth — что это такое?",
+        a: `<ul>
+<li><strong>JWT (JSON Web Tokens)</strong> — строка с данными пользователя (ID, имя, уровень доступа). После аутентификации выдаётся два токена:
+  <ul>
+    <li><strong>Access token</strong> — короткоживущий, используется для авторизации.</li>
+    <li><strong>Refresh token</strong> — используется для получения нового access token.</li>
+  </ul>
+  Если access token перехватят — доступ будет только до истечения его срока (несколько минут).
+</li>
+<li><strong>OAuth</strong> — предоставляет токены доступа к сторонним сервисам. Пример: авторизация через соцсеть.</li>
+</ul>`
+      }
+    ]
+  }
+];
+
+let doneSet = new Set(JSON.parse(localStorage.getItem('qa_done') || '[]'));
+let currentFilter = 'all';
+let searchVal = '';
+
+function saveDone() {
+  localStorage.setItem('qa_done', JSON.stringify([...doneSet]));
+}
+
+function getItemId(si, ii) { return `${si}-${ii}`; }
+
+function renderAll() {
+  const container = document.getElementById('main-content');
+  container.innerHTML = '';
+
+  let totalVisible = 0;
+  let doneVisible = 0;
+
+  DATA.forEach((section, si) => {
+    const matchingItems = section.items.filter((item, ii) => {
+      const id = getItemId(si, ii);
+      const matchSearch = !searchVal || item.q.toLowerCase().includes(searchVal) || item.a.toLowerCase().includes(searchVal);
+      const isDone = doneSet.has(id);
+      const matchFilter = currentFilter === 'all' || (currentFilter === 'done' && isDone) || (currentFilter === 'undone' && !isDone);
+      return matchSearch && matchFilter;
+    });
+
+    if (matchingItems.length === 0) return;
+
+    const sectionDiv = document.createElement('div');
+    sectionDiv.className = 'section-block';
+
+    const label = document.createElement('div');
+    label.className = 'section-label';
+    label.innerHTML = `<span class="section-num">${section.num}</span> ${section.section}`;
+    sectionDiv.appendChild(label);
+
+    matchingItems.forEach((item) => {
+      const origIdx = section.items.indexOf(item);
+      const id = getItemId(si, origIdx);
+      const isDone = doneSet.has(id);
+
+      const acc = document.createElement('div');
+      acc.className = 'acc-item' + (isDone ? ' done' : '');
+      acc.dataset.id = id;
+
+      acc.innerHTML = `
+        <button class="acc-btn" aria-expanded="false">
+          <div class="acc-check" title="Отметить как изученное">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="acc-title">${item.q}</span>
+          <svg class="acc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acc-body">${item.a}</div>
+      `;
+
+      const btn = acc.querySelector('.acc-btn');
+      const check = acc.querySelector('.acc-check');
+      const body = acc.querySelector('.acc-body');
+
+      btn.addEventListener('click', (e) => {
+        if (e.target.closest('.acc-check')) return;
+        const isOpen = acc.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+      });
+
+      check.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (doneSet.has(id)) {
+          doneSet.delete(id);
+          acc.classList.remove('done');
+        } else {
+          doneSet.add(id);
+          acc.classList.add('done');
+        }
+        saveDone();
+        updateStats();
+      });
+
+      totalVisible++;
+      if (isDone) doneVisible++;
+
+      sectionDiv.appendChild(acc);
+    });
+
+    container.appendChild(sectionDiv);
+  });
+
+  if (totalVisible === 0) {
+    container.innerHTML = '<div class="no-results">Ничего не найдено 🔍</div>';
+  }
+
+  updateStats();
+}
+
+function updateStats() {
+  const total = DATA.reduce((a, s) => a + s.items.length, 0);
+  const done = doneSet.size;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('progress-text').textContent = `${done} / ${total} изучено`;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+document.getElementById('search').addEventListener('input', (e) => {
+  searchVal = e.target.value.toLowerCase().trim();
+  renderAll();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderAll();
+  });
+});
+
+renderAll();
+</script>
+</body>
+</html>
