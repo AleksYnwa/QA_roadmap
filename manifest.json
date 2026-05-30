@@ -1,0 +1,28 @@
+{
+  "name": "QA Theory + Quiz",
+  "short_name": "QA Theory",
+  "description": "Учебник по теории QA с тестами и SQL тренажёром",
+  "start_url": "/QA_roadmap/",
+  "scope": "/QA_roadmap/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0d10",
+  "theme_color": "#3ecf8e",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": []
+}
