@@ -10,31 +10,116 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0e0e10;
-    --surface: #18181c;
-    --surface2: #222228;
-    --border: #2e2e38;
-    --accent: #7c6dfa;
-    --accent2: #3ecf8e;
-    --text: #e8e8f0;
-    --muted: #888898;
-    --tag-bg: #1e1e2a;
-    --tag-text: #a09af0;
+    /* ── dark (default) ─────────────────────────────── */
+    --bg:          #0d0d10;
+    --surface:     #17171c;
+    --surface2:    #202028;
+    --border:      #2c2c38;
+    --accent:      #7c6dfa;
+    --accent2:     #3ecf8e;
+    --text:        #e8e8f2;
+    --muted:       #80809a;
+    --tag-bg:      #1c1c2e;
+    --tag-text:    #a09af0;
+
+    /* shared semantics */
+    --body-text:   #c4c4da;
+    --tip-bg:      #181828;
+    --tip-text:    #a4a4c0;
+    --tip-border:  var(--accent);
+
+    /* badges dark */
+    --badge-red-bg:    #2a1418; --badge-red-text:    #f08080;
+    --badge-orange-bg: #2a1c10; --badge-orange-text: #e8a060;
+    --badge-yellow-bg: #26200c; --badge-yellow-text: #d4bc50;
+    --badge-blue-bg:   #0c1e2e; --badge-blue-text:   #70b0e8;
+    --badge-gray-bg:   var(--surface2); --badge-gray-text:  var(--muted);
+    --badge-green-bg:  #0e2018; --badge-green-text:  #50c878;
+
+    /* quiz dark */
+    --quiz-bg:       linear-gradient(135deg, #1a2744 0%, #1e2d50 100%);
+    --quiz-border:   #2a4080;
+    --quiz-heading:  #7ea8f0;
+    --quiz-opt-bg:   rgba(255,255,255,0.04);
+    --quiz-opt-brd:  rgba(255,255,255,0.10);
+    --quiz-dot-idle: rgba(255,255,255,0.15);
+    --quiz-retry-bg: #2a5298;
+    --quiz-retry-hover: #3a62a8;
+    --quiz-correct-bg:  rgba(34,197,94,0.18);
+    --quiz-correct-brd: #22c55e;
+    --quiz-correct-txt: #86efac;
+    --quiz-wrong-bg:    rgba(239,68,68,0.18);
+    --quiz-wrong-brd:   #ef4444;
+    --quiz-wrong-txt:   #fca5a5;
+    --quiz-hover-brd:   #4a80d0;
+    --quiz-hover-bg:    rgba(74,128,208,0.12);
+    --quiz-dot-ok:      #22c55e;
+    --quiz-dot-err:     #ef4444;
+    --quiz-dot-cur:     #4a80d0;
+
+    /* transitions */
+    --transition-theme: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+
+  [data-theme="light"] {
+    --bg:          #f2f2f7;
+    --surface:     #ffffff;
+    --surface2:    #eaeaf2;
+    --border:      #d8d8e8;
+    --accent:      #5b4ef0;
+    --accent2:     #1ea870;
+    --text:        #14141e;
+    --muted:       #7070a0;
+    --tag-bg:      #eeecff;
+    --tag-text:    #5b4ef0;
+
+    --body-text:   #34344e;
+    --tip-bg:      #eeecff;
+    --tip-text:    #4a4a70;
+    --tip-border:  var(--accent);
+
+    --badge-red-bg:    #ffe8e8; --badge-red-text:    #c02020;
+    --badge-orange-bg: #fff0e0; --badge-orange-text: #b05010;
+    --badge-yellow-bg: #fffae0; --badge-yellow-text: #907010;
+    --badge-blue-bg:   #e0f0ff; --badge-blue-text:   #1060c0;
+    --badge-gray-bg:   var(--surface2); --badge-gray-text:  var(--muted);
+    --badge-green-bg:  #e0f5ea; --badge-green-text:  #107840;
+
+    --quiz-bg:       linear-gradient(135deg, #eceaff 0%, #e8f0ff 100%);
+    --quiz-border:   #c0b8f8;
+    --quiz-heading:  #5b4ef0;
+    --quiz-opt-bg:   rgba(91,78,240,0.04);
+    --quiz-opt-brd:  rgba(91,78,240,0.15);
+    --quiz-dot-idle: rgba(0,0,0,0.12);
+    --quiz-retry-bg: #5b4ef0;
+    --quiz-retry-hover: #4a3ed8;
+    --quiz-correct-bg:  rgba(30,168,112,0.15);
+    --quiz-correct-brd: #1ea870;
+    --quiz-correct-txt: #107840;
+    --quiz-wrong-bg:    rgba(200,40,40,0.12);
+    --quiz-wrong-brd:   #cc3030;
+    --quiz-wrong-txt:   #a01010;
+    --quiz-hover-brd:   #5b4ef0;
+    --quiz-hover-bg:    rgba(91,78,240,0.10);
+    --quiz-dot-ok:      #1ea870;
+    --quiz-dot-err:     #cc3030;
+    --quiz-dot-cur:     #5b4ef0;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 17px;
+    font-size: var(--fs-base);
     line-height: 1.7;
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
   }
 
   /* HEADER */
   header {
     border-bottom: 1px solid var(--border);
-    padding: 2rem 0 1.5rem;
+    padding: clamp(1rem, 2.5vw, 2rem) 0 clamp(0.75rem, 2vw, 1.5rem);
     background: var(--bg);
     position: sticky;
     top: 0;
@@ -42,9 +127,9 @@
     backdrop-filter: blur(12px);
   }
   .header-inner {
-    max-width: 1100px;
+    max-width: calc(var(--content-max) + var(--sidebar-w) + var(--layout-gap) + calc(var(--page-pad) * 2));
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 var(--page-pad);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -53,17 +138,18 @@
   }
   .logo {
     font-family: 'Unbounded', sans-serif;
-    font-size: 1.25rem;
+    font-size: var(--fs-md);
     font-weight: 700;
     color: var(--accent);
     letter-spacing: -0.02em;
   }
   .logo span { color: var(--accent2); }
+  .logo em { color: var(--accent2); font-style: normal; opacity: 0.9; font-weight: 400; }
   .progress-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 15px;
+    font-size: var(--fs-xs);
     color: var(--muted);
   }
   .progress-bar {
@@ -83,9 +169,7 @@
 
   /* SEARCH */
   .search-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 0;
+    padding: 1.5rem var(--page-pad) 0;
   }
   .search-input {
     width: 100%;
@@ -95,7 +179,7 @@
     padding: 0.65rem 1rem 0.65rem 2.5rem;
     color: var(--text);
     font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 16px;
+    font-size: var(--fs-sm);
     outline: none;
     transition: border-color 0.2s;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888898' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
@@ -107,9 +191,7 @@
 
   /* FILTERS */
   .filters {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1rem 1.5rem;
+    padding: 1rem var(--page-pad);
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
@@ -119,7 +201,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 4px 14px;
-    font-size: 14px;
+    font-size: var(--fs-xs);
     font-family: 'IBM Plex Sans', sans-serif;
     color: var(--muted);
     cursor: pointer;
@@ -131,9 +213,8 @@
 
   /* MAIN */
   main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem;
+    padding: 1rem var(--page-pad) 4rem;
+    min-height: 100vh;
   }
 
   /* SECTION */
@@ -142,7 +223,7 @@
   }
   .section-label {
     font-family: 'Unbounded', sans-serif;
-    font-size: 12px;
+    font-size: var(--fs-2xs);
     font-weight: 600;
     letter-spacing: 0.12em;
     color: var(--muted);
@@ -159,9 +240,9 @@
     background: var(--border);
   }
   .section-num {
-    font-size: 11px;
-    background: var(--tag-bg);
-    color: var(--tag-text);
+    font-size: var(--fs-2xs);
+    background: rgba(62,207,142,0.12);
+    color: var(--accent2);
     padding: 2px 7px;
     border-radius: 4px;
     font-family: 'IBM Plex Mono', monospace;
@@ -176,7 +257,7 @@
     overflow: hidden;
     transition: border-color 0.2s;
   }
-  .acc-item:hover { border-color: #3e3e52; }
+  .acc-item:hover { border-color: color-mix(in srgb, var(--border) 50%, var(--accent) 50%); }
   .acc-item.open { border-color: var(--accent); }
   .acc-item.done { border-color: var(--accent2); }
   .acc-item.done .acc-btn { opacity: 0.7; }
@@ -193,7 +274,7 @@
     text-align: left;
     color: var(--text);
     font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 17px;
+    font-size: var(--fs-base);
     font-weight: 500;
     transition: background 0.15s;
   }
@@ -230,9 +311,9 @@
   /* BODY */
   .acc-body {
     display: none;
-    padding: 0 1.25rem 1.25rem 3.5rem;
-    color: #c8c8d8;
-    font-size: 16px;
+    padding: 0.85rem 1.25rem 1.25rem 3.5rem;
+    color: var(--body-text);
+    font-size: var(--fs-sm);
     line-height: 1.75;
   }
   .acc-item.open .acc-body { display: block; }
@@ -240,7 +321,7 @@
   .acc-body h4 {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
-    font-size: 15px;
+    font-size: var(--fs-xs);
     color: var(--accent);
     margin: 1rem 0 0.4rem;
     text-transform: uppercase;
@@ -258,24 +339,24 @@
     background: var(--tag-bg);
     color: var(--tag-text);
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 14px;
+    font-size: var(--fs-2xs);
     padding: 1px 5px;
     border-radius: 4px;
   }
   .tip {
-    background: #1a1a28;
-    border-left: 3px solid var(--accent);
+    background: var(--tip-bg);
+    border-left: 3px solid var(--tip-border);
     border-radius: 0 6px 6px 0;
     padding: 0.75rem 1rem;
     margin: 0.75rem 0;
-    font-size: 15px;
-    color: #a8a8c0;
+    font-size: var(--fs-xs);
+    color: var(--tip-text);
   }
   .tip strong { color: var(--accent); }
   .severity-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 15px;
+    font-size: var(--fs-xs);
     margin: 0.75rem 0;
   }
   .severity-table td {
@@ -285,23 +366,21 @@
   .severity-table tr:nth-child(even) td { background: var(--tag-bg); }
   .badge {
     display: inline-block;
-    font-size: 13px;
+    font-size: var(--fs-2xs);
     padding: 2px 8px;
     border-radius: 4px;
     font-weight: 500;
   }
-  .badge-red { background: #2a1515; color: #f08080; }
-  .badge-orange { background: #2a1e10; color: #e8a060; }
-  .badge-yellow { background: #26220e; color: #d4bc50; }
-  .badge-blue { background: #0e1e2a; color: #70b0e8; }
-  .badge-gray { background: var(--surface2); color: var(--muted); }
-  .badge-green { background: #102218; color: #50c878; }
+  .badge-red { background: var(--badge-red-bg); color: var(--badge-red-text); }
+  .badge-orange { background: var(--badge-orange-bg); color: var(--badge-orange-text); }
+  .badge-yellow { background: var(--badge-yellow-bg); color: var(--badge-yellow-text); }
+  .badge-blue { background: var(--badge-blue-bg); color: var(--badge-blue-text); }
+  .badge-gray { background: var(--badge-gray-bg); color: var(--badge-gray-text); }
+  .badge-green { background: var(--badge-green-bg); color: var(--badge-green-text); }
 
   /* STATS BAR */
   .stats {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.5rem 1.5rem 0;
+    padding: 1.5rem var(--page-pad) 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
@@ -315,38 +394,699 @@
   }
   .stat-num {
     font-family: 'Unbounded', sans-serif;
-    font-size: 2rem;
+    font-size: var(--fs-2xl);
     font-weight: 700;
     color: var(--accent);
   }
   .stat-num.green { color: var(--accent2); }
-  .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .stat-label { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; }
 
   .no-results {
     text-align: center;
     padding: 3rem;
     color: var(--muted);
-    font-size: 16px;
+    font-size: var(--fs-sm);
   }
 
-  @media (max-width: 600px) {
-    .acc-body { padding-left: 1rem; }
-    .stats { grid-template-columns: repeat(3,1fr); }
-    .stat-num { font-size: 1.5rem; }
+
+  /* ═══════════════════════════════════════════════════════
+     FLUID TYPE SCALE  (clamp: min, preferred, max)
+     base viewport reference: 480px → 3840px
+  ═══════════════════════════════════════════════════════ */
+  :root {
+    /* font sizes */
+    --fs-2xs: clamp(0.625rem,  0.58rem  + 0.22vw, 0.8125rem);  /* 10 → 13px */
+    --fs-xs:  clamp(0.6875rem, 0.64rem  + 0.24vw, 0.9375rem);  /* 11 → 15px */
+    --fs-sm:  clamp(0.75rem,   0.7rem   + 0.27vw, 1rem);        /* 12 → 16px */
+    --fs-md:  clamp(0.8125rem, 0.76rem  + 0.28vw, 1.0625rem);  /* 13 → 17px */
+    --fs-base:clamp(0.875rem,  0.82rem  + 0.3vw,  1.125rem);   /* 14 → 18px */
+    --fs-lg:  clamp(1rem,      0.92rem  + 0.4vw,  1.375rem);   /* 16 → 22px */
+    --fs-xl:  clamp(1.25rem,   1.1rem   + 0.8vw,  2rem);       /* 20 → 32px */
+    --fs-2xl: clamp(1.5rem,    1.2rem   + 1.5vw,  3rem);       /* 24 → 48px */
+
+    /* spacing */
+    --sp-xs:  clamp(0.375rem,  0.3rem   + 0.35vw, 0.75rem);
+    --sp-sm:  clamp(0.625rem,  0.5rem   + 0.65vw, 1.25rem);
+    --sp-md:  clamp(0.875rem,  0.7rem   + 0.9vw,  1.75rem);
+    --sp-lg:  clamp(1.25rem,   1rem     + 1.3vw,  2.5rem);
+    --sp-xl:  clamp(2rem,      1.5rem   + 2.5vw,  4rem);
+
+    /* layout */
+    --content-max: 900px;
+    --sidebar-w:   0px;
+    --layout-gap:  0px;
+    --page-pad:    clamp(1rem, 4vw, 1.5rem);
+
+    /* header height for sticky sidebar offset */
+    --header-h: 90px;
   }
+
+  /* ── body base ── */
+  body { font-size: var(--fs-base); }
+
+  /* ── wrapper injected by JS: .layout ── */
+  .layout {
+    display: block;
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  /* ── Sections/wrappers inside layout ── */
+  .stats, .search-wrap, .filters, main {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ═══════ XS — small phones (< 480px) ═══════════════ */
+  @media (max-width: 479px) {
+    :root { --header-h: 100px; }
+    .header-inner { gap: 0.5rem; }
+    .progress-wrap { display: none; }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .stat-num { font-size: var(--fs-xl); }
+    .stat-label { font-size: var(--fs-2xs); }
+    .stat-card { padding: 0.6rem 0.5rem; }
+    .acc-body { padding-left: 1rem; }
+    .acc-btn { padding: 0.75rem 1rem; font-size: var(--fs-md); }
+    .section-label { font-size: var(--fs-2xs); }
+    .quiz-block { padding: 16px; }
+    .filter-btn { font-size: var(--fs-2xs); padding: 3px 10px; }
+  }
+
+  /* ═══════ SM — phones (480–767px) ══════════════════ */
+  @media (min-width: 480px) and (max-width: 767px) {
+    .stats { gap: 8px; }
+    .stat-num { font-size: var(--fs-xl); }
+    .acc-body { padding-left: 1rem; }
+  }
+
+  /* ═══════ MD — tablets (768–1023px) ════════════════ */
+  @media (min-width: 768px) {
+    :root { --content-max: 860px; --header-h: 82px; }
+    .stat-card { padding: 1rem 1.25rem; }
+    .stat-label { font-size: var(--fs-xs); }
+    .logo { font-size: var(--fs-lg); }
+  }
+
+  /* ═══════ LG — laptops/desktops (1024–1439px) ══════ */
+  @media (min-width: 1024px) {
+    :root { --content-max: 940px; --header-h: 78px; }
+  }
+
+  /* ═══════ XL — large monitors (1440–2199px) ════════ */
+  @media (min-width: 1440px) {
+    :root {
+      --content-max: 1060px;
+      --sidebar-w:   230px;
+      --layout-gap:  2.5rem;
+      --header-h:    74px;
+    }
+    /* grid layout: sidebar + content */
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      grid-template-rows: auto;
+      gap: 0 var(--layout-gap);
+      max-width: calc(var(--content-max) + var(--sidebar-w) + var(--layout-gap));
+      align-items: start;
+    }
+    .layout > *:not(.sidebar) {
+      grid-column: 2;
+      width: 100%;
+      min-width: 0;
+    }
+    .sidebar {
+      grid-column: 1;
+      grid-row: 1 / 999;
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 1rem);
+      max-height: calc(100vh - var(--header-h) - 2rem);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    /* adjust inner paddings since layout handles centering */
+    .stats, .search-wrap, .filters, main {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .stats { padding-top: var(--sp-lg); }
+    .search-wrap { padding-top: var(--sp-lg); padding-bottom: 0; }
+    .filters { padding-top: var(--sp-sm); padding-bottom: var(--sp-xs); }
+    main { padding-bottom: 5rem; }
+    header { padding: 1.25rem 0 1rem; }
+    .header-inner { max-width: calc(var(--content-max) + var(--sidebar-w) + var(--layout-gap) + calc(var(--page-pad) * 2)); }
+    .stat-num { font-size: var(--fs-2xl); }
+    .acc-btn { font-size: var(--fs-base); padding: 1.1rem 1.4rem; }
+    .section-label { font-size: var(--fs-xs); }
+    .quiz-block { padding: 28px; }
+    .quiz-header h3 { font-size: var(--fs-sm); }
+  }
+
+  /* ═══════ 2XL — 2K / wide (2200–3799px) ════════════ */
+  @media (min-width: 2200px) {
+    :root {
+      --content-max: 1300px;
+      --sidebar-w:   280px;
+      --layout-gap:  3.5rem;
+      --header-h:    90px;
+    }
+    header { padding: 1.75rem 0 1.5rem; }
+    .logo { font-size: var(--fs-xl); }
+    .acc-btn { padding: 1.25rem 1.5rem; }
+    .acc-body { padding: 1rem 1.5rem 1.5rem 4rem; line-height: 1.85; }
+    .stat-card { padding: 1.25rem 1.5rem; border-radius: 12px; }
+    .acc-item { border-radius: 14px; margin-bottom: 8px; }
+    .search-input { padding: 0.85rem 1.25rem 0.85rem 3rem; }
+    .quiz-block { padding: 36px; border-radius: 16px; }
+  }
+
+  /* ═══════ 4K / TV (3800px+) ════════════════════════ */
+  @media (min-width: 3800px) {
+    :root {
+      --content-max: 1600px;
+      --sidebar-w:   320px;
+      --layout-gap:  4rem;
+      --header-h:    110px;
+    }
+    header { padding: 2.5rem 0 2rem; }
+    .acc-item { border-radius: 18px; margin-bottom: 10px; }
+    .stat-card { border-radius: 16px; }
+    .quiz-block { border-radius: 20px; }
+    .search-input { border-radius: 12px; }
+    .filter-btn { border-radius: 30px; }
+    .progress-bar { width: 200px; height: 6px; }
+  }
+
+  /* ═══════ RETINA / HIGH-DPI ═════════════════════════ */
+  @media (min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 2) {
+    .acc-item,
+    .stat-card,
+    .search-input,
+    .quiz-block,
+    .filter-btn,
+    .quiz-opt { border-width: 0.5px; }
+    header { border-bottom-width: 0.5px; }
+    .section-label::after { height: 0.5px; }
+    .tip { border-left-width: 2px; }
+  }
+
+
+  /* ── QUIZ BLOCK ─────────────────────────────────────── */
+  .quiz-block {
+    margin-top: 24px;
+    background: var(--quiz-bg);
+    border: 1px solid var(--quiz-border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: var(--transition-theme);
+  }
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0;
+  }
+  .quiz-header h3 {
+    margin: 0;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--quiz-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .quiz-toggle {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--quiz-heading);
+    font-size: var(--fs-lg);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .quiz-block.collapsed .quiz-toggle { transform: rotate(-90deg); }
+  .quiz-body {
+    overflow: hidden;
+    max-height: 2000px;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.25s ease;
+    opacity: 1;
+    margin-top: 16px;
+  }
+  .quiz-block.collapsed .quiz-body {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+  .quiz-question { margin-bottom: 20px; }
+  .quiz-question p {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 10px;
+  }
+  .quiz-opts { display: flex; flex-direction: column; gap: 7px; }
+  .quiz-opt {
+    background: var(--quiz-opt-bg);
+    border: 1px solid var(--quiz-opt-brd);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: var(--fs-xs);
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--quiz-hover-brd); background: var(--quiz-hover-bg); }
+  .quiz-opt.correct { background: var(--quiz-correct-bg); border-color: var(--quiz-correct-brd); color: var(--quiz-correct-txt); }
+  .quiz-opt.wrong   { background: var(--quiz-wrong-bg);  border-color: var(--quiz-wrong-brd); color: var(--quiz-wrong-txt); }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-feedback {
+    font-size: var(--fs-2xs);
+    margin-top: 6px;
+    min-height: 18px;
+    color: var(--muted);
+  }
+  .quiz-feedback.ok  { color: var(--quiz-correct-txt); }
+  .quiz-feedback.err { color: var(--quiz-wrong-txt); }
+  .quiz-dots {
+    display: flex; gap: 5px; flex-wrap: wrap;
+    margin: 16px 0 12px;
+  }
+  .quiz-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--quiz-dot-idle);
+    transition: background 0.2s;
+  }
+  .quiz-dot.ok  { background: var(--quiz-dot-ok); }
+  .quiz-dot.err { background: var(--quiz-dot-err); }
+  .quiz-dot.cur { background: var(--quiz-dot-cur); }
+  .quiz-result {
+    text-align: center;
+    padding: 20px 0 4px;
+    display: none;
+  }
+  .quiz-result .score-emoji { font-size: clamp(28px, 3vw, 44px); margin-bottom: 8px; }
+  .quiz-result .score-text  { font-size: var(--fs-base); font-weight: 600; color: var(--text); }
+  .quiz-result .score-sub   { font-size: var(--fs-xs); color: var(--muted); margin-top: 4px; }
+  .quiz-retry {
+    margin-top: 14px;
+    background: var(--quiz-retry-bg);
+    border: none; border-radius: 8px;
+    color: #fff; font-size: var(--fs-xs);
+    padding: 8px 22px; cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .quiz-retry:hover { background: var(--quiz-retry-hover); }
+
+  /* ── THEME TOGGLE ───────────────────────────────────── */
+  .theme-toggle {
+    width: 40px; height: 22px;
+    background: var(--border);
+    border-radius: 11px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: var(--muted);
+    border-radius: 50%;
+    transition: transform 0.3s, background 0.3s;
+  }
+  [data-theme="light"] .theme-toggle {
+    background: var(--accent);
+  }
+  [data-theme="light"] .theme-toggle::after {
+    transform: translateX(18px);
+    background: #fff;
+  }
+  .theme-icon {
+    font-size: var(--fs-md);
+    color: var(--muted);
+    line-height: 1;
+  }
+  .theme-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── SIDEBAR ────────────────────────────────────────── */
+  .sidebar {
+    display: none;   /* hidden until xl breakpoint */
+  }
+  .sidebar-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: var(--fs-2xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  .sidebar-link:hover { background: var(--surface2); color: var(--text); }
+  .sidebar-link.active { background: var(--tag-bg); color: var(--accent); }
+  .sidebar-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--fs-2xs);
+    color: var(--muted);
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .sidebar-link.active .sidebar-num { color: var(--accent); opacity: 0.8; }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (min-width: 1440px) {
+    .sidebar { display: block; }
+  }
+
+  /* ── SQL TRAINER ─────────────────────────────────────── */
+  .sql-trainer {
+    margin-top: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sql-trainer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .sql-trainer.open .sql-trainer-header {
+    border-bottom-color: var(--border);
+  }
+  .sql-trainer-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .sql-trainer-title svg { flex-shrink: 0; }
+  .sql-trainer-toggle {
+    font-size: var(--fs-lg);
+    color: var(--muted);
+    transition: transform 0.25s;
+    line-height: 1;
+  }
+  .sql-trainer.open .sql-trainer-toggle { transform: rotate(180deg); }
+
+  .sql-trainer-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .sql-trainer.open .sql-trainer-body { max-height: 12000px; }
+
+  .sql-trainer-inner { padding: 20px; }
+
+  /* Schema hint */
+  .sql-schema {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--fs-2xs);
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  .sql-schema strong {
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .sql-schema-tables {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .sql-schema-table { min-width: 160px; }
+  .sql-schema-table-name {
+    color: var(--accent2);
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  .sql-schema-col { color: var(--tag-text); }
+  .sql-schema-col em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 0.9em;
+    margin-left: 4px;
+  }
+
+  /* Exercise */
+  .sql-exercise {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sql-exercise:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .sql-exercise-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .sql-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--fs-2xs);
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+  }
+  .sql-tag.dml  { background: rgba(124,109,250,0.15); color: var(--accent); }
+  .sql-tag.dql  { background: rgba(62,207,142,0.15);  color: var(--accent2); }
+  .sql-tag.agg  { background: rgba(251,191,36,0.15);  color: #f0b020; }
+  [data-theme="light"] .sql-tag.agg { color: #9a6800; }
+
+  .sql-difficulty {
+    font-size: var(--fs-2xs);
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .sql-task {
+    font-size: var(--fs-sm);
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .sql-task strong { color: var(--accent); }
+
+  /* Editor area */
+  .sql-editor-wrap {
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .sql-editor {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 60px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .sql-editor:focus { border-color: var(--accent); }
+  .sql-editor.valid   { border-color: var(--quiz-correct-brd); }
+  .sql-editor.invalid { border-color: var(--quiz-wrong-brd); }
+
+  .sql-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sql-run-btn {
+    background: var(--accent);
+    border: none;
+    border-radius: 7px;
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    padding: 7px 18px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .sql-run-btn:hover { opacity: 0.85; }
+  .sql-hint-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sql-hint-btn:hover { border-color: var(--accent); color: var(--text); }
+  .sql-reset-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-left: auto;
+  }
+  .sql-reset-btn:hover { color: var(--text); }
+
+  /* Feedback */
+  .sql-feedback {
+    margin-top: 8px;
+    font-size: var(--fs-xs);
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: 7px;
+    display: none;
+  }
+  .sql-feedback.ok {
+    display: block;
+    background: var(--quiz-correct-bg);
+    border: 1px solid var(--quiz-correct-brd);
+    color: var(--quiz-correct-txt);
+  }
+  .sql-feedback.err {
+    display: block;
+    background: var(--quiz-wrong-bg);
+    border: 1px solid var(--quiz-wrong-brd);
+    color: var(--quiz-wrong-txt);
+  }
+  .sql-hint-box {
+    margin-top: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px dashed var(--border);
+    border-radius: 7px;
+    padding: 8px 14px;
+    display: none;
+    line-height: 1.6;
+  }
+  .sql-hint-box.show { display: block; }
+
+  /* Progress row */
+  .sql-trainer-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+  .sql-trainer-header-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 20px 12px;
+    font-size: var(--fs-xs);
+    color: var(--muted);
+  }
+  .sql-trainer-header-progress .sql-progress-bar { flex: 1; }
+  .sql-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .sql-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .sql-score { font-family: 'IBM Plex Mono', monospace; color: var(--accent2); font-weight: 600; }
+
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="logo">QA<span>.</span>theory</div>
+    <div class="logo">QA<span>.</span>theory<em>+quiz</em></div>
+    <div class="theme-wrap">
+      <span class="theme-icon" id="theme-icon">🌙</span>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Переключить тему"></button>
+    </div>
     <div class="progress-wrap">
       <span id="progress-text">0 / 0 изучено</span>
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
   </div>
 </header>
+
+<div class="layout" id="layout">
+<aside class="sidebar" id="sidebar"></aside>
 
 <div class="stats">
   <div class="stat-card">
@@ -358,7 +1098,7 @@
     <div class="stat-label">изучено</div>
   </div>
   <div class="stat-card">
-    <div class="stat-num" id="stat-sections">15</div>
+    <div class="stat-num" id="stat-sections">16</div>
     <div class="stat-label">тем</div>
   </div>
 </div>
@@ -481,6 +1221,18 @@ const DATA = [
 </ul>
 <div class="tip"><strong>Пример:</strong> По заданию поле пароля скрывает символы точками (верификация пройдена), но без кнопки «Показать пароль» пользователь не видит, что печатает, и ошибается — валидация не пройдена.</div>`
       }
+    ],
+          quiz: [
+      { q: "Баг — это...", opts: ["Ошибка в документации", "Отклонение фактического результата от ожидаемого", "Любое несоответствие требованиям", "Сбой системы при нагрузке"], correct: 1 },
+      { q: "Какой уровень severity полностью блокирует работу приложения?", opts: ["Critical", "Major", "Trivial", "Blocker"], correct: 3 },
+      { q: "Верификация — это...", opts: ["Проверка удобства для пользователя", "Проверка соответствия формальным требованиям", "Проверка соответствия ожиданиям заказчика", "Автоматическое тестирование"], correct: 1 },
+      { q: "Что является основной задачей QA?", opts: ["Написание кода", "Предотвращение ошибок", "Управление командой", "Тестирование производительности"], correct: 1 },
+      { q: "В каком статусе баг, когда разработчик над ним работает?", opts: ["Новый", "Назначен", "Открыт", "Исправлен"], correct: 2 },
+      { q: "Что такое сбой (failure)?", opts: ["Ошибка в коде", "Отклонение в документации", "Результат выполнения кода с дефектом", "Баг с высоким severity"], correct: 2 },
+      { q: "Пример бага с высоким приоритетом и низкой серьёзностью?", opts: ["Приложение не запускается", "Не применяется промокод", "Опечатка на главной странице бизнес-портала", "Неверная сортировка"], correct: 2 },
+      { q: "Что означает статус Deferred?", opts: ["Баг некорректный", "Баг уже заведён в системе", "Низкий приоритет, исправят позже", "Не влияет на функциональность"], correct: 2 },
+      { q: "Чем QC отличается от Testing?", opts: ["QC пишет код", "QC анализирует результаты и оценивает готовность", "QC занимается только автотестами", "QC и Testing — одно и то же"], correct: 1 },
+      { q: "Все баги являются дефектами?", opts: ["Да, и все дефекты — баги", "Да, но не все дефекты — баги", "Нет, баги — отдельная категория", "Только Critical и Blocker"], correct: 1 },
     ]
   },
   {
@@ -563,6 +1315,18 @@ const DATA = [
 <li>Все найденные баги пофикшены или принято решение ехать с ними.</li>
 </ol>`
       }
+    ],
+          quiz: [
+      { q: "Сколько основных этапов в SDLC?", opts: ["5", "6", "7", "8"], correct: 2 },
+      { q: "Какая методология использует анализ рисков на каждом витке?", opts: ["Waterfall", "V-Model", "Spiral", "Kanban"], correct: 2 },
+      { q: "Сколько ритуалов в SCRUM?", opts: ["3", "4", "5", "6"], correct: 2 },
+      { q: "DoR — это...", opts: ["Список условий для финиша задачи", "Список условий для старта задачи", "Методология управления", "Тип ретроспективы"], correct: 1 },
+      { q: "В какой методологии каждый этап разработки связан с тестированием?", opts: ["Waterfall", "Agile", "V-Model", "Incremental"], correct: 2 },
+      { q: "Что такое лимиты в Kanban?", opts: ["Срок выполнения задачи", "Ограничение задач в определённых статусах", "Количество участников команды", "Метрика производительности"], correct: 1 },
+      { q: "Тестирование считается завершённым, когда...", opts: ["Пройдено 100% тест-кейсов", "Истёк срок спринта", "Выполнены критерии приёмки и решены все баги", "Написан финальный отчёт"], correct: 2 },
+      { q: "Что делают тестировщики в начале нового спринта в первую очередь?", opts: ["Пишут автотесты", "Дотестируют хвосты с предыдущего спринта", "Проводят ретроспективу", "Разворачивают тестовую среду"], correct: 1 },
+      { q: "Agile включает в себя...", opts: ["Только SCRUM", "SCRUM и Kanban", "Только Waterfall", "Spiral и RAD"], correct: 1 },
+      { q: "Ежедневный стендап — это ритуал из...", opts: ["Kanban", "Waterfall", "SCRUM", "V-Model"], correct: 2 },
     ]
   },
   {
@@ -588,6 +1352,15 @@ const DATA = [
 <li><strong>Толстый клиент</strong> — основная бизнес-логика на стороне клиента, может работать автономно. Примеры: Microsoft Word, Photoshop.</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Что такое балансировщик в клиент-серверной архитектуре?", opts: ["БД для быстрого доступа", "Компонент для распределения нагрузки", "Тип клиентского приложения", "Протокол передачи данных"], correct: 1 },
+      { q: "Где выполняется основная нагрузка у тонкого клиента?", opts: ["На клиентском устройстве", "На сервере", "В базе данных", "В балансировщике"], correct: 1 },
+      { q: "Google Docs — это пример...", opts: ["Толстого клиента", "Тонкого клиента", "Микросервиса", "Монолитного приложения"], correct: 1 },
+      { q: "Microsoft Word — это пример...", opts: ["Тонкого клиента", "Серверного приложения", "Толстого клиента", "Брокера сообщений"], correct: 2 },
+      { q: "Кластер серверов используется для...", opts: ["Хранения баз данных", "Только балансировки трафика", "Повышения отказоустойчивости", "Ускорения клиентской части"], correct: 2 },
+      { q: "Тонкий клиент сильно зависит от...", opts: ["Мощности процессора", "Качества сети", "Версии ОС", "Размера экрана"], correct: 1 },
+      { q: "Клиент в клиент-серверной архитектуре...", opts: ["Хранит всю бизнес-логику", "Отсылает запросы и принимает ответы", "Управляет базой данных", "Распределяет нагрузку"], correct: 1 },
     ]
   },
   {
@@ -621,6 +1394,16 @@ const DATA = [
 </ul>
 <div class="tip">SOAP использует <strong>WSDL</strong> (Web Services Description Language) — XML-язык для описания веб-сервисов.</div>`
       }
+    ],
+          quiz: [
+      { q: "Сколько принципов у REST?", opts: ["4", "5", "6", "7"], correct: 2 },
+      { q: "REST — это...", opts: ["Протокол передачи данных", "Архитектурный стиль для взаимодействия с API", "Формат данных на основе XML", "Язык описания веб-сервисов"], correct: 1 },
+      { q: "Stateless в REST означает...", opts: ["Данные кэшируются на клиенте", "Сервер не хранит состояние клиента между запросами", "Клиент отделён от сервера", "Интерфейс единообразен"], correct: 1 },
+      { q: "Какой элемент SOAP содержит само сообщение?", opts: ["Envelope", "Header", "Body", "Fault"], correct: 2 },
+      { q: "Что такое Cacheable в REST?", opts: ["Разделение клиента и сервера", "Данные могут кэшироваться для ускорения", "Единый интерфейс запросов", "Многоуровневость системы"], correct: 1 },
+      { q: "WSDL используется в...", opts: ["REST", "HTTP", "SOAP", "Kafka"], correct: 2 },
+      { q: "Главное отличие REST от SOAP?", opts: ["REST быстрее SOAP", "REST использует XML, SOAP — JSON", "REST — архитектурный стиль, SOAP — протокол", "SOAP только для мобильных"], correct: 2 },
+      { q: "API — это...", opts: ["База данных", "Правила общения одной программы с другой", "Протокол шифрования", "Тип HTTP-запроса"], correct: 1 },
     ]
   },
   {
@@ -666,6 +1449,15 @@ const DATA = [
 <h4>Взаимодействие микросервисов</h4>
 <p>Через <strong>API</strong> и <strong>брокер сообщений</strong> (центральный роутер для координации).</p>`
       }
+    ],
+          quiz: [
+      { q: "Что является минусом монолитной архитектуры?", opts: ["Высокая производительность", "Простота отладки", "Риск полного отказа при ошибке в одном модуле", "Один репозиторий"], correct: 2 },
+      { q: "Как общаются микросервисы между собой?", opts: ["Напрямую через общую память", "Через API и брокеры сообщений", "Только через общую БД", "Через файловую систему"], correct: 1 },
+      { q: "Какой плюс есть у монолита?", opts: ["Лёгкое масштабирование частей", "Независимость модулей", "Простота разработки и один репозиторий", "Быстрые обновления без пересборки"], correct: 2 },
+      { q: "Почему в микросервисах труднее искать баги?", opts: ["Нет инструментов логирования", "Ошибки распределены по нескольким сервисам", "Нет доступа к коду", "Баги не логируются"], correct: 1 },
+      { q: "Что нельзя сделать с монолитом, но можно с микросервисами?", opts: ["Хранить логи в одном месте", "Масштабировать только нагруженную часть", "Быстро развернуть в одном файле", "Использовать единый стек технологий"], correct: 1 },
+      { q: "Падение одного микросервиса...", opts: ["Роняет всё приложение", "Никак не влияет на систему", "Не ломает остальные сервисы", "Требует полного перезапуска"], correct: 2 },
+      { q: "Минус монолита при масштабировании:", opts: ["Нельзя масштабировать только нагруженную часть", "Сложно использовать кэш", "Нет поддержки БД", "Не работает под нагрузкой"], correct: 0 },
     ]
   },
   {
@@ -731,6 +1523,18 @@ const DATA = [
 <li>Принятие обоснованных решений о готовности к релизу.</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Сколько основных этапов в STLC?", opts: ["4", "5", "6", "7"], correct: 2 },
+      { q: "«Одни и те же тесты перестают находить новые дефекты» — это...", opts: ["Скопление дефектов", "Парадокс пестицида", "Принцип раннего тестирования", "Исчерпывающее тестирование"], correct: 1 },
+      { q: "Сколько атрибутов качественного требования?", opts: ["5", "7", "9", "11"], correct: 2 },
+      { q: "Принцип «раннее тестирование» означает...", opts: ["Тестировать только первый модуль", "Чем раньше начать, тем дешевле исправлять ошибки", "Запускать тесты быстро", "Начинать тестирование в начале спринта"], correct: 1 },
+      { q: "Что проверяет метрика Open/Closed Bugs?", opts: ["Процент упавших тест-кейсов", "Соотношение открытых и закрытых багов", "Количество переоткрытых багов", "Скорость исправления"], correct: 1 },
+      { q: "Трассируемость требования — это...", opts: ["Проверяемость тестами", "Связь с тест-кейсами и задачами", "Однозначность формулировки", "Актуальность для бизнеса"], correct: 1 },
+      { q: "«Большинство багов в нескольких модулях» — это...", opts: ["Парадокс пестицида", "Принцип раннего тестирования", "Принцип скопления дефектов", "Заблуждение об отсутствии ошибок"], correct: 2 },
+      { q: "Исчерпывающее тестирование невозможно, потому что...", opts: ["Не хватает времени", "Нельзя проверить все комбинации входных данных", "Нет инструментов", "Разработчики не дают доступ"], correct: 1 },
+      { q: "На каком этапе STLC создаются тест-кейсы?", opts: ["Анализ требований", "Планирование", "Разработка тест-кейсов", "Выполнение тестов"], correct: 2 },
+      { q: "«Тестирование зависит от контекста» означает...", opts: ["Одни тесты подходят для всех", "Подходы различаются в зависимости от типа системы", "Нужно тестировать в определённое время", "Контекст не влияет"], correct: 1 },
     ]
   },
   {
@@ -771,6 +1575,17 @@ const DATA = [
 <li><strong>По степени автоматизации</strong> — Ручное, Автоматизированное.</li>
 </ol>`
       }
+    ],
+          quiz: [
+      { q: "Нефункциональное тестирование проверяет...", opts: ["Работу основных бизнес-функций", "КАК система работает: скорость, безопасность, удобство", "Соответствие требованиям документации", "Интеграцию с API"], correct: 1 },
+      { q: "Sanity-тестирование направлено...", opts: ["Вширь — покрыть максимум функционала", "Вглубь — детальная проверка конкретной функции", "На безопасность", "На производительность"], correct: 1 },
+      { q: "Чёрный ящик — это...", opts: ["Полный доступ к коду", "Частичный доступ к схеме БД", "Тестирование через внешний интерфейс без доступа к коду", "Тестирование только API"], correct: 2 },
+      { q: "Re-testing проводится для...", opts: ["Проверки после обновления ПО", "Проверки что конкретный баг был исправлен", "Быстрой проверки основных функций", "Проверки всего функционала"], correct: 1 },
+      { q: "Smoke-тестирование — это...", opts: ["Глубокая проверка одной функции", "Быстрая широкая проверка основных функций", "Проверка после исправления бага", "Тестирование производительности"], correct: 1 },
+      { q: "Серый ящик означает...", opts: ["Нет доступа к коду совсем", "Полный доступ к исходному коду", "Частичный доступ — схема БД или список API", "Доступ только к UI"], correct: 2 },
+      { q: "Regression Testing нужен, чтобы...", opts: ["Проверить новую функцию", "Убедиться, что изменения не сломали существующее", "Подтвердить исправление конкретного бага", "Проверить безопасность"], correct: 1 },
+      { q: "Статическое тестирование — это...", opts: ["Тестирование без запуска кода", "Тестирование с запуском приложения", "Только ручное тестирование", "Автоматизированное тестирование"], correct: 0 },
+      { q: "По уровню тестирование делится на...", opts: ["Ручное и автоматизированное", "Позитивное и негативное", "Модульное, интеграционное, системное, приёмочное", "Статическое и динамическое"], correct: 2 },
     ]
   },
   {
@@ -811,6 +1626,16 @@ const DATA = [
 </ul>
 <div class="tip">Юнит-тесты пишут разработчики. Баг-репорт на этом уровне не создаётся — разработчик находит, правит и проверяет самостоятельно. Тестирование API относится к <strong>интеграционному</strong> уровню.</div>`
       }
+    ],
+          quiz: [
+      { q: "Каких тестов в пирамиде должно быть больше всего?", opts: ["Приёмочных", "Системных", "Интеграционных", "Модульных (Unit)"], correct: 3 },
+      { q: "Тестирование API относится к уровню...", opts: ["Модульному", "Интеграционному", "Системному", "Приёмочному"], correct: 1 },
+      { q: "Приёмочные тесты работают по принципу...", opts: ["Белого ящика", "Серого ящика", "Чёрного ящика", "Зависит от команды"], correct: 2 },
+      { q: "Чем выше уровень пирамиды, тем тесты...", opts: ["Быстрее и дешевле", "Медленнее и дороже", "Более изолированы", "Их становится больше"], correct: 1 },
+      { q: "Кто пишет юнит-тесты?", opts: ["QA-инженеры", "Разработчики", "Менеджеры продукта", "DevOps-инженеры"], correct: 1 },
+      { q: "Системный уровень проверяет...", opts: ["Минимальный модуль кода", "Взаимодействие нескольких модулей", "Весь продукт — верификацию требований", "E2E сценарии заказчика"], correct: 2 },
+      { q: "Ширина уровня в пирамиде означает...", opts: ["Сложность тестов", "Стоимость тестов", "Количество тестов", "Скорость выполнения"], correct: 2 },
+      { q: "Что проверяет приёмочный уровень?", opts: ["Минимальный модуль кода", "Несколько модулей вместе", "Весь продукт целиком", "E2E сценарии с точки зрения заказчика (валидация)"], correct: 3 },
     ]
   },
   {
@@ -894,6 +1719,18 @@ const DATA = [
 </table>
 <p><strong>Исследовательское тестирование</strong> — тестирование без заранее составленных тест-кейсов. Изучение системы и генерация тестов «на лету» одновременно с исследованием поведения.</p>`
       }
+    ],
+          quiz: [
+      { q: "Сколько классов эквивалентности для пароля 8–15 символов?", opts: ["1", "2", "3", "4"], correct: 2 },
+      { q: "Техника граничных значений проверяет...", opts: ["Все возможные входные значения", "Значения на границах классов эквивалентности", "Все пары параметров", "Случайные значения"], correct: 1 },
+      { q: "Pairwise сокращает тесты за счёт...", opts: ["Случайного выбора значений", "Тестирования только пар параметров", "Тестирования только граничных значений", "Отказа от негативных тестов"], correct: 1 },
+      { q: "Какой процент дефектов ловит Pairwise?", opts: ["40–50%", "60–70%", "70–90%", "100%"], correct: 2 },
+      { q: "Что такое схема переходов и состояний?", opts: ["Таблица с условиями да/нет", "Список тест-кейсов", "Графическое представление изменений состояний системы", "Метод выбора граничных значений"], correct: 2 },
+      { q: "В таблице принятия решений на пересечении условий — это...", opts: ["Описание теста", "Действие системы при данной комбинации условий", "Приоритет теста", "Только ожидаемый результат"], correct: 1 },
+      { q: "Исследовательское тестирование — это...", opts: ["Тестирование строго по тест-кейсам", "Только автоматизированное тестирование", "Изучение системы и генерация тестов одновременно", "Тестирование граничных значений"], correct: 2 },
+      { q: "Что определяют ПЕРВЫМ при граничных значениях?", opts: ["Класс эквивалентности", "ШАГ — минимальную разницу между соседними значениями", "Верхнюю границу", "Нижнюю границу"], correct: 1 },
+      { q: "По ISTQB граничные значения — это...", opts: ["2 точки (нижняя и верхняя)", "3 точки на каждой границе", "4 точки: нижняя−1, нижняя, верхняя, верхняя+1", "Все значения класса"], correct: 2 },
+      { q: "Главная польза техники эквивалентных классов?", opts: ["Тестирование всех возможных значений", "Сокращение числа тест-кейсов при сохранении охвата", "Проверка пар параметров", "Графическое отображение логики"], correct: 1 },
     ]
   },
   {
@@ -957,6 +1794,18 @@ const DATA = [
 <p><strong>Куки</strong> — маленькие текстовые файлы для хранения данных сессии, настроек, корзины. Сайт отправляет куки при первом посещении, браузер возвращает их при каждом следующем.</p>
 <div class="tip"><strong>Тестировщику важно:</strong> чистить кэш, чтобы не путать старые данные с новыми изменениями в приложении.</div>`
       }
+    ],
+          quiz: [
+      { q: "В какой вкладке DevTools видны все HTTP-запросы страницы?", opts: ["Elements", "Console", "Network", "Application"], correct: 2 },
+      { q: "Где в DevTools проверить, что токен удалился после выхода?", opts: ["Console", "Network → Payload", "Elements", "Application → Local Storage"], correct: 3 },
+      { q: "Для чего очищать кэш при тестировании?", opts: ["Ускорить загрузку страниц", "Не путать старые данные с новыми изменениями", "Сбросить куки", "Закрыть сетевое соединение"], correct: 1 },
+      { q: "Что показывает вкладка Console?", opts: ["HTTP-запросы браузера", "CSS-стили элементов", "Журнал JS-событий, ошибок и предупреждений", "Хранилище браузера"], correct: 2 },
+      { q: "Для чего используется Slow 3G в Network?", opts: ["Для ускорения тестирования", "Для имитации медленного интернета", "Для блокировки запросов", "Для просмотра заголовков"], correct: 1 },
+      { q: "Где смотреть CSS-стили конкретного элемента?", opts: ["Network", "Console", "Application", "Elements → Styles"], correct: 3 },
+      { q: "Session Storage от Local Storage отличается тем, что...", opts: ["Не поддерживает JSON", "Исчезает при закрытии вкладки", "Доступен только серверу", "Хранит только токены"], correct: 1 },
+      { q: "Что такое Preserve log во вкладке Network?", opts: ["Сохраняет куки", "Сохраняет историю запросов при переходах между страницами", "Очищает логи", "Фильтрует только API-запросы"], correct: 1 },
+      { q: "Фильтр Fetch/XHR в Network используется для...", opts: ["Просмотра всех запросов включая картинки", "Просмотра только API-запросов", "Фильтрации по статус-коду", "Поиска в заголовках"], correct: 1 },
+      { q: "Что означает красная строка в Console?", opts: ["Предупреждение о возможной проблеме", "Информационное сообщение", "Ошибка JavaScript — копировать в баг-репорт", "Успешный запрос"], correct: 2 },
     ]
   },
   {
@@ -996,6 +1845,16 @@ const DATA = [
 <li>Среда (Environment), Severity, Priority, Скриншоты/логи.</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Сколько обязательных полей у тест-кейса?", opts: ["3", "4", "5", "6"], correct: 2 },
+      { q: "Хорошее название баг-репорта отвечает на вопросы...", opts: ["Кто, Что, Зачем", "Что, Где, Когда", "Как, Почему, Когда", "Что, Почему, Кто"], correct: 1 },
+      { q: "Чем чек-лист отличается от тест-кейса?", opts: ["Чек-лист содержит детальные шаги", "Чек-лист краткий без детализации, тест-кейс — детальный документ", "Чек-лист только для UI", "Нет разницы"], correct: 1 },
+      { q: "Что такое Precondition в тест-кейсе?", opts: ["Ожидаемый результат", "Фактический результат", "Условия, которые нужно выполнить перед тестом", "Шаги воспроизведения"], correct: 2 },
+      { q: "Сколько обязательных полей в баг-репорте?", opts: ["3", "4", "5", "7"], correct: 2 },
+      { q: "Что такое Expected Result в баг-репорте?", opts: ["Что пошло не так", "Шаги для воспроизведения", "Как должна работать система в норме", "Приоритет бага"], correct: 2 },
+      { q: "Один тест-кейс должен проверять...", opts: ["Весь модуль целиком", "Один конкретный сценарий или функцию", "Несколько функций сразу", "Только граничные значения"], correct: 1 },
+      { q: "ID в тест-кейсе — это...", opts: ["Имя тестировщика", "Уникальный номер для идентификации", "Версия приложения", "Тип теста"], correct: 1 },
     ]
   },
   {
@@ -1065,6 +1924,20 @@ const DATA = [
 <tr><td><span class="badge badge-red">504</span></td><td>Gateway Timeout — шлюз не дождался ответа</td></tr>
 </table>`
       }
+    ],
+          quiz: [
+      { q: "Какой HTTP-метод для частичного изменения ресурса?", opts: ["PUT", "POST", "PATCH", "DELETE"], correct: 2 },
+      { q: "Что означает статус 404?", opts: ["Нет прав доступа", "Ресурс не найден", "Ошибка сервера", "Неверный запрос"], correct: 1 },
+      { q: "Какие методы являются идемпотентными?", opts: ["POST, PATCH", "GET, PUT, DELETE", "POST, PUT", "GET, POST"], correct: 1 },
+      { q: "На каком порту работает HTTPS?", opts: ["80", "8080", "443", "3000"], correct: 2 },
+      { q: "Что означает статус 422?", opts: ["Нет авторизации", "Конфликт данных", "Ошибка валидации данных в теле запроса", "Сервер недоступен"], correct: 2 },
+      { q: "У каких методов нет тела запроса?", opts: ["POST, PUT", "GET, HEAD, DELETE", "PATCH, DELETE", "PUT, PATCH"], correct: 1 },
+      { q: "Что означает статус 401?", opts: ["Нет прав доступа (авторизации)", "Нужна аутентификация", "Ресурс не найден", "Конфликт данных"], correct: 1 },
+      { q: "Что означает статус 503?", opts: ["Внутренняя ошибка сервера", "Сервис временно недоступен", "Неверный запрос", "Шлюз не ответил"], correct: 1 },
+      { q: "POST-метод является...", opts: ["Идемпотентным", "Неидемпотентным — каждый вызов создаёт новый ресурс", "Только для чтения", "Аналогом GET"], correct: 1 },
+      { q: "Что такое query-параметры в URL?", opts: ["Заголовки запроса", "Тело запроса", "Часть URL после ? в формате ключ=значение", "Тип HTTP-метода"], correct: 2 },
+      { q: "Статус 201 означает...", opts: ["Запрос принят, выполняется", "Данные успешно созданы", "Нет содержимого", "Постоянный редирект"], correct: 1 },
+      { q: "Чем PUT отличается от PATCH?", opts: ["PUT — создание, PATCH — удаление", "PUT полностью заменяет ресурс, PATCH — частично", "Нет разницы", "PATCH создаёт, PUT — обновляет"], correct: 1 },
     ]
   },
   {
@@ -1102,6 +1975,16 @@ const DATA = [
 <li><code>SELECT * FROM t1 JOIN t2 ON t1.id = t2.id</code> — соединение таблиц</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Что такое Primary Key?", opts: ["Поле для хранения пароля", "Уникальный идентификатор записи, никогда не NULL", "Ссылка на другую таблицу", "Индекс для ускорения"], correct: 1 },
+      { q: "Что такое Foreign Key?", opts: ["Уникальный идентификатор записи", "Поле, ссылающееся на Primary Key другой таблицы", "Первичный ключ в таблице", "Тип данных столбца"], correct: 1 },
+      { q: "Какой SQL-оператор для выборки данных?", opts: ["INSERT", "UPDATE", "SELECT", "DELETE"], correct: 2 },
+      { q: "Что делает оператор JOIN?", opts: ["Удаляет записи из таблицы", "Объединяет данные из нескольких таблиц", "Фильтрует по условию", "Сортирует результаты"], correct: 1 },
+      { q: "Оператор для вставки данных в таблицу?", opts: ["UPDATE", "SELECT", "DELETE", "INSERT INTO"], correct: 3 },
+      { q: "Что делает SELECT DISTINCT?", opts: ["Выбирает все строки", "Возвращает только уникальные значения", "Подсчитывает строки", "Обновляет данные"], correct: 1 },
+      { q: "Primary Key может быть NULL?", opts: ["Да, если поле необязательное", "Нет, никогда", "Да, если это внешний ключ", "Зависит от СУБД"], correct: 1 },
+      { q: "Что такое СУБД?", opts: ["Язык запросов", "Система управления базами данных", "Тип таблицы", "Протокол доступа к данным"], correct: 1 },
     ]
   },
   {
@@ -1155,6 +2038,16 @@ const DATA = [
 </table>
 <div class="tip"><strong>Когда использовать:</strong> API → мгновенный ответ (проверка пароля). Брокер → события и фоновые задачи (отправка чека после оплаты).</div>`
       }
+    ],
+          quiz: [
+      { q: "Что такое Topic в Kafka?", opts: ["Тип Consumer-а", "Логическая категория сообщений", "Метод доставки", "Порядковый номер сообщения"], correct: 1 },
+      { q: "Главное преимущество брокера перед API?", opts: ["Быстрее обрабатывает запросы", "Работает при недоступности получателя", "Проще настроить", "Поддерживает только JSON"], correct: 1 },
+      { q: "Producer в Kafka — это...", opts: ["Компонент, читающий сообщения", "Компонент, отправляющий сообщения в топик", "Топик для хранения событий", "Порядковый номер сообщения"], correct: 1 },
+      { q: "Что такое офсет в Kafka?", opts: ["Тип топика", "Имя Consumer-а", "Порядковый номер сообщения в партиции", "Тип Producer-а"], correct: 2 },
+      { q: "Партиции в Kafka нужны для...", opts: ["Фильтрации сообщений", "Параллельной обработки", "Авторизации Consumer-ов", "Сжатия данных"], correct: 1 },
+      { q: "Когда использовать API, а не брокер?", opts: ["Когда нужна фоновая обработка", "Когда получатель может быть недоступен", "Когда нужен мгновенный ответ", "Когда много подписчиков"], correct: 2 },
+      { q: "Если сервис-получатель упал, что будет с сообщением в брокере?", opts: ["Сообщение потеряется", "Будет обработано, когда сервис поднимется", "Брокер отправит другому сервису", "Брокер тоже упадёт"], correct: 1 },
+      { q: "Отличие брокера от API по подписке:", opts: ["API — много подписчиков, брокер — только 1", "Брокер: 1 сообщение → много подписчиков; API: 1→1", "Нет разницы", "Брокер — только 1→1"], correct: 1 },
     ]
   },
   {
@@ -1194,6 +2087,16 @@ const DATA = [
 <li><strong>Логи сетевых устройств</strong> — роутеры, коммутаторы, firewall. Передаются по syslog.</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Какой уровень лога означает остановку программы?", opts: ["ERROR", "WARN", "FATAL", "DEBUG"], correct: 2 },
+      { q: "Уровень DEBUG используется для...", opts: ["Критических ошибок", "Остановки программы", "Деталей для отладки", "Потенциальных проблем"], correct: 2 },
+      { q: "Какие логи записываются операционной системой?", opts: ["Логи приложений", "Логи безопасности", "Системные логи", "Логи БД"], correct: 2 },
+      { q: "Уровень WARN означает...", opts: ["Остановку программы", "Потенциальные проблемы, требующие внимания", "Детали для отладки", "Основные события работы"], correct: 1 },
+      { q: "Уровень INFO используется для...", opts: ["Деталей отладки", "Максимально подробной информации", "Основных событий работы приложения", "Потенциальных проблем"], correct: 2 },
+      { q: "Зачем тестировщику смотреть логи?", opts: ["Для написания тест-кейсов", "Для нахождения причины сбоя и локализации ошибок", "Для создания баг-репорта без воспроизведения", "Только для оценки производительности"], correct: 1 },
+      { q: "TRACE — это...", opts: ["Самый критичный уровень", "Максимально подробная информация, детальнее DEBUG", "Уровень для основных событий", "Аналог ERROR"], correct: 1 },
+      { q: "Логи безопасности включают...", opts: ["Операции с БД", "Аутентификацию, изменения прав, атаки", "Системные события ОС", "Входящие HTTP-запросы"], correct: 1 },
     ]
   },
   {
@@ -1222,6 +2125,16 @@ const DATA = [
 <li><strong>OAuth</strong> — предоставляет токены доступа к сторонним сервисам. Пример: авторизация через соцсеть.</li>
 </ul>`
       }
+    ],
+          quiz: [
+      { q: "Что происходит на этапе аутентификации?", opts: ["Пользователь вводит логин", "Система определяет права пользователя", "Проверяется подлинность личности (пароль)", "Выдаётся refresh token"], correct: 2 },
+      { q: "Access token в JWT — это...", opts: ["Долгоживущий токен для обновления сессии", "Короткоживущий токен для авторизации", "Токен для регистрации", "OAuth-токен"], correct: 1 },
+      { q: "Идентификация — это...", opts: ["Проверка пароля", "Определение прав пользователя", "Ввод логина — определение пользователя в системе", "Выдача токена"], correct: 2 },
+      { q: "Refresh token используется для...", opts: ["Первичной авторизации", "Получения нового access token", "Регистрации пользователя", "Шифрования данных"], correct: 1 },
+      { q: "OAuth предоставляет...", opts: ["Шифрование паролей", "Токены доступа к сторонним сервисам", "JWT-токены для авторизации", "Управление сессиями"], correct: 1 },
+      { q: "Авторизация — это...", opts: ["Ввод логина", "Проверка пароля", "Определение прав и привилегий пользователя", "Создание токена"], correct: 2 },
+      { q: "Правильный порядок входа в систему:", opts: ["Авторизация → Идентификация → Аутентификация", "Аутентификация → Идентификация → Авторизация", "Идентификация → Аутентификация → Авторизация", "Авторизация → Аутентификация → Идентификация"], correct: 2 },
+      { q: "Что смягчает угрозу при перехвате access token?", opts: ["Длинный пароль", "Access token быстро истекает (короткоживущий)", "OAuth защита", "Refresh token шифрование"], correct: 1 },
     ]
   }
 ];
@@ -1236,6 +2149,512 @@ function saveDone() {
 
 function getItemId(si, ii) { return `${si}-${ii}`; }
 
+
+// ── QUIZ ────────────────────────────────────────────────
+let quizDoneCount = parseInt(localStorage.getItem('qa_quiz_count') || '0');
+
+function saveQuizCount() {
+  localStorage.setItem('qa_quiz_count', quizDoneCount);
+}
+
+function buildQuiz(section, container) {
+  if (!section.quiz || section.quiz.length === 0) return;
+  const qs = section.quiz;
+
+  const block = document.createElement('div');
+  block.className = 'quiz-block collapsed';
+
+  // Collapsible header
+  const header = document.createElement('div');
+  header.className = 'quiz-header';
+
+  const title = document.createElement('h3');
+  title.textContent = `📝 Тест: ${section.section} — ${qs.length} вопросов`;
+  const toggle = document.createElement('div');
+  toggle.className = 'quiz-toggle';
+  toggle.innerHTML = '&#9660;';
+  header.appendChild(title);
+  header.appendChild(toggle);
+  block.appendChild(header);
+
+  header.addEventListener('click', () => {
+    block.classList.toggle('collapsed');
+  });
+
+  // Body (everything inside)
+  const body = document.createElement('div');
+  body.className = 'quiz-body';
+  block.appendChild(body);
+
+  // Dots
+  const dotsDiv = document.createElement('div');
+  dotsDiv.className = 'quiz-dots';
+  qs.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'quiz-dot' + (i === 0 ? ' cur' : '');
+    dotsDiv.appendChild(d);
+  });
+  body.appendChild(dotsDiv);
+
+  // Questions
+  let current = 0;
+  let correct = 0;
+  const answers = new Array(qs.length).fill(null);
+  const qDivs = [];
+
+  qs.forEach((qData, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'quiz-question';
+    qDiv.style.display = qi === 0 ? 'block' : 'none';
+
+    const qp = document.createElement('p');
+    qp.textContent = `${qi + 1}. ${qData.q}`;
+    qDiv.appendChild(qp);
+
+    const optsDiv = document.createElement('div');
+    optsDiv.className = 'quiz-opts';
+
+    const feedback = document.createElement('div');
+    feedback.className = 'quiz-feedback';
+
+    qData.opts.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        if (answers[qi] !== null) return;
+        answers[qi] = oi;
+        const isCorrect = oi === qData.correct;
+        if (isCorrect) correct++;
+
+        optsDiv.querySelectorAll('.quiz-opt').forEach((b, bi) => {
+          b.disabled = true;
+          if (bi === qData.correct) b.classList.add('correct');
+          else if (bi === oi && !isCorrect) b.classList.add('wrong');
+        });
+
+        const dot = dotsDiv.children[qi];
+        dot.classList.remove('cur');
+        dot.classList.add(isCorrect ? 'ok' : 'err');
+
+        feedback.className = 'quiz-feedback ' + (isCorrect ? 'ok' : 'err');
+        feedback.textContent = isCorrect
+          ? '✓ Верно!'
+          : `✗ Неверно. Правильный ответ: ${qData.opts[qData.correct]}`;
+
+        // Move to next after delay
+        setTimeout(() => {
+          if (qi + 1 < qs.length) {
+            qDiv.style.display = 'none';
+            qDivs[qi + 1].style.display = 'block';
+            const nextDot = dotsDiv.children[qi + 1];
+            if (nextDot) nextDot.classList.add('cur');
+            current = qi + 1;
+          } else {
+            // Show result
+            showResult();
+          }
+        }, 900);
+      });
+      optsDiv.appendChild(btn);
+    });
+
+    qDiv.appendChild(optsDiv);
+    qDiv.appendChild(feedback);
+    body.appendChild(qDiv);
+    qDivs.push(qDiv);
+  });
+
+  // Result panel
+  const resultDiv = document.createElement('div');
+  resultDiv.className = 'quiz-result';
+
+  function showResult() {
+    qDivs.forEach(d => d.style.display = 'none');
+    dotsDiv.style.display = 'none';
+    resultDiv.style.display = 'block';
+    const pct = Math.round((correct / qs.length) * 100);
+    let emoji = correct === qs.length ? '🏆' : correct >= qs.length * 0.7 ? '👍' : '📚';
+    resultDiv.querySelector('.score-emoji').textContent = emoji;
+    resultDiv.querySelector('.score-text').textContent = `${correct} из ${qs.length} верно (${pct}%)`;
+    resultDiv.querySelector('.score-sub').textContent =
+      correct === qs.length ? 'Отлично! Раздел освоен.' :
+      pct >= 70 ? 'Хороший результат!' : 'Стоит повторить материал.';
+    if (correct === qs.length) {
+      quizDoneCount++;
+      saveQuizCount();
+    }
+  }
+
+  const retryBtn = document.createElement('button');
+  retryBtn.className = 'quiz-retry';
+  retryBtn.textContent = '↺ Пройти снова';
+  retryBtn.addEventListener('click', () => {
+    correct = 0;
+    answers.fill(null);
+    current = 0;
+    resultDiv.style.display = 'none';
+    dotsDiv.style.display = 'flex';
+    dotsDiv.querySelectorAll('.quiz-dot').forEach((d, i) => {
+      d.className = 'quiz-dot' + (i === 0 ? ' cur' : '');
+    });
+    qDivs.forEach((d, i) => {
+      d.style.display = i === 0 ? 'block' : 'none';
+      d.querySelectorAll('.quiz-opt').forEach(b => {
+        b.disabled = false;
+        b.className = 'quiz-opt';
+      });
+      d.querySelector('.quiz-feedback').textContent = '';
+      d.querySelector('.quiz-feedback').className = 'quiz-feedback';
+    });
+  });
+
+  resultDiv.innerHTML = `
+    <div class="score-emoji"></div>
+    <div class="score-text"></div>
+    <div class="score-sub"></div>
+  `;
+  resultDiv.appendChild(retryBtn);
+  body.appendChild(resultDiv);
+  container.appendChild(block);
+}
+
+
+// ── SQL TRAINER ─────────────────────────────────────────
+const SQL_EXERCISES = [
+  // ── SELECT basic ──────────────────────────────────────
+  {
+    tag: 'SELECT', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>имена и возраст</strong> всех пользователей из таблицы <code>users</code>.',
+    hint: 'SELECT name, age FROM users',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /select\b/.test(s) && /\bname\b/.test(s) && /\bage\b/.test(s) && /from\s+users/.test(s);
+    },
+    ok: 'Верно! SELECT name, age FROM users — перечисляем нужные столбцы через запятую.'
+  },
+  {
+    tag: 'SELECT', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>все столбцы</strong> из таблицы <code>orders</code>, отсортировав по <strong>дате создания</strong> (<code>created_at</code>) от новых к старым.',
+    hint: 'SELECT * FROM orders ORDER BY created_at DESC',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /select\s+\*/.test(s) && /from\s+orders/.test(s) && /order\s+by\s+created_at/.test(s) && /desc/.test(s);
+    },
+    ok: 'Верно! ORDER BY col DESC — сортировка от большего к меньшему (от новых дат к старым).'
+  },
+  // ── WHERE ─────────────────────────────────────────────
+  {
+    tag: 'WHERE', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи все заказы из таблицы <code>orders</code>, у которых <strong>статус = \'paid\'</strong>.',
+    hint: "SELECT * FROM orders WHERE status = 'paid'",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /from\s+orders/.test(s) && /where\s+status\s*=\s*['"]paid['"]/.test(s);
+    },
+    ok: "Верно! WHERE status = 'paid' фильтрует строки по условию. Строки — в кавычках."
+  },
+  {
+    tag: 'WHERE', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи пользователей из таблицы <code>users</code>, у которых <strong>возраст больше 25</strong> и <strong>город = \'Moscow\'</strong>.',
+    hint: "SELECT * FROM users WHERE age > 25 AND city = 'Moscow'",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /from\s+users/.test(s) && /where/.test(s) && /age\s*>\s*25/.test(s) && /\band\b/.test(s) && /city\s*=\s*['"]moscow['"]/.test(s);
+    },
+    ok: "Верно! Несколько условий объединяются через AND. Оба должны выполниться одновременно."
+  },
+  // ── INSERT ────────────────────────────────────────────
+  {
+    tag: 'INSERT', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Добавь нового пользователя в таблицу <code>users</code>: имя <strong>\'Anna\'</strong>, возраст <strong>28</strong>, город <strong>\'SPb\'</strong>.',
+    hint: "INSERT INTO users (name, age, city) VALUES ('Anna', 28, 'SPb')",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /insert\s+into\s+users/.test(s) && /values/.test(s) && /['"]anna['"]/.test(s) && /\b28\b/.test(s) && /['"]spb['"]/.test(s);
+    },
+    ok: "Верно! INSERT INTO table (cols) VALUES (vals) — порядок столбцов и значений должен совпадать."
+  },
+  {
+    tag: 'INSERT', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Добавь заказ в таблицу <code>orders</code>: пользователь с <code>user_id</code> = <strong>5</strong>, статус <strong>\'new\'</strong>, сумма <code>amount</code> = <strong>1500</strong>.',
+    hint: "INSERT INTO orders (user_id, status, amount) VALUES (5, 'new', 1500)",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /insert\s+into\s+orders/.test(s) && /values/.test(s) && /\b5\b/.test(s) && /['"]new['"]/.test(s) && /\b1500\b/.test(s);
+    },
+    ok: "Верно! Числовые значения пишутся без кавычек, строковые — в одинарных кавычках."
+  },
+  // ── UPDATE ────────────────────────────────────────────
+  {
+    tag: 'UPDATE', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Обнови статус заказа с <code>id = 42</code> в таблице <code>orders</code> на <strong>\'shipped\'</strong>.',
+    hint: "UPDATE orders SET status = 'shipped' WHERE id = 42",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /update\s+orders\s+set/.test(s) && /status\s*=\s*['"]shipped['"]/.test(s) && /where\s+id\s*=\s*42/.test(s);
+    },
+    ok: "Верно! UPDATE без WHERE обновит ВСЕ строки — всегда указывай условие."
+  },
+  {
+    tag: 'UPDATE', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Увеличь возраст (<code>age</code>) пользователя с именем <strong>\'Ivan\'</strong> на <strong>1</strong> в таблице <code>users</code>.',
+    hint: "UPDATE users SET age = age + 1 WHERE name = 'Ivan'",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /update\s+users\s+set/.test(s) && /age\s*=\s*age\s*\+\s*1/.test(s) && /where\s+name\s*=\s*['"]ivan['"]/.test(s);
+    },
+    ok: "Верно! Можно ссылаться на текущее значение столбца: SET age = age + 1."
+  },
+  // ── DELETE ────────────────────────────────────────────
+  {
+    tag: 'DELETE', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Удали всех пользователей из таблицы <code>users</code>, у которых <code>city = \'Unknown\'</code>.',
+    hint: "DELETE FROM users WHERE city = 'Unknown'",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /delete\s+from\s+users/.test(s) && /where\s+city\s*=\s*['"]unknown['"]/.test(s);
+    },
+    ok: "Верно! DELETE без WHERE удалит ВСЕ данные. Перед удалением всегда проверь WHERE-условие."
+  },
+  {
+    tag: 'DELETE', tagClass: 'dml', difficulty: 'базовый',
+    task: 'Удали заказ с <code>id = 7</code> из таблицы <code>orders</code>.',
+    hint: 'DELETE FROM orders WHERE id = 7',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /delete\s+from\s+orders/.test(s) && /where\s+id\s*=\s*7/.test(s);
+    },
+    ok: 'Верно! При удалении по первичному ключу гарантированно удаляется ровно одна запись.'
+  },
+  // ── DISTINCT ──────────────────────────────────────────
+  {
+    tag: 'DISTINCT', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>список уникальных городов</strong> из таблицы <code>users</code>.',
+    hint: 'SELECT DISTINCT city FROM users',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /select\s+distinct\s+city/.test(s) && /from\s+users/.test(s);
+    },
+    ok: 'Верно! DISTINCT убирает дубли в результате — каждый город появится только один раз.'
+  },
+  // ── COUNT / SUM ───────────────────────────────────────
+  {
+    tag: 'COUNT', tagClass: 'agg', difficulty: 'базовый',
+    task: 'Посчитай, <strong>сколько заказов</strong> есть в таблице <code>orders</code> со статусом <strong>\'paid\'</strong>.',
+    hint: "SELECT COUNT(*) FROM orders WHERE status = 'paid'",
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /select\s+count\s*\(/.test(s) && /from\s+orders/.test(s) && /where\s+status\s*=\s*['"]paid['"]/.test(s);
+    },
+    ok: 'Верно! COUNT(*) считает количество строк, прошедших условие WHERE.'
+  },
+  {
+    tag: 'SUM', tagClass: 'agg', difficulty: 'базовый',
+    task: 'Найди <strong>сумму всех заказов</strong> (<code>amount</code>) в таблице <code>orders</code>.',
+    hint: 'SELECT SUM(amount) FROM orders',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /select\s+sum\s*\(\s*amount\s*\)/.test(s) && /from\s+orders/.test(s);
+    },
+    ok: 'Верно! SUM(col) складывает все числовые значения столбца. Игнорирует NULL.'
+  },
+  // ── LIMIT ─────────────────────────────────────────────
+  {
+    tag: 'LIMIT', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>первых 5 пользователей</strong> из таблицы <code>users</code>, отсортированных по <code>id</code>.',
+    hint: 'SELECT * FROM users ORDER BY id LIMIT 5',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /from\s+users/.test(s) && /order\s+by\s+id/.test(s) && /limit\s+5/.test(s);
+    },
+    ok: 'Верно! LIMIT ограничивает количество строк в выдаче. Обычно используется с ORDER BY.'
+  },
+  // ── JOIN ──────────────────────────────────────────────
+  {
+    tag: 'JOIN', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>имена пользователей</strong> (<code>users.name</code>) и <strong>сумму их заказов</strong> (<code>orders.amount</code>), объединив таблицы <code>users</code> и <code>orders</code> по <code>user_id</code>.',
+    hint: 'SELECT users.name, orders.amount FROM users JOIN orders ON users.id = orders.user_id',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /from\s+users/.test(s) && /join\s+orders/.test(s) && /on\b/.test(s) && /user_id/.test(s);
+    },
+    ok: 'Верно! JOIN объединяет строки двух таблиц. ON указывает, по какому условию строки считаются связанными.'
+  },
+  {
+    tag: 'JOIN', tagClass: 'dql', difficulty: 'базовый',
+    task: 'Выведи <strong>все пары</strong> (имя пользователя — статус заказа) из таблиц <code>users</code> и <code>orders</code>. Включи пользователей <strong>даже без заказов</strong>.',
+    hint: 'SELECT users.name, orders.status FROM users LEFT JOIN orders ON users.id = orders.user_id',
+    validate(sql) {
+      const s = sql.toLowerCase().replace(/\s+/g, ' ').trim();
+      return /left\s+join/.test(s) && /users/.test(s) && /orders/.test(s) && /on\b/.test(s) && /user_id/.test(s);
+    },
+    ok: 'Верно! LEFT JOIN возвращает все строки левой таблицы. Если совпадений нет — поля правой таблицы будут NULL.'
+  }
+];
+
+function buildSqlTrainer(container) {
+  const wrap = document.createElement('div');
+  wrap.className = 'sql-trainer';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'sql-trainer-header';
+  header.innerHTML = '<div class="sql-trainer-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>SQL Тренажёр — ' + SQL_EXERCISES.length + ' задач</div><div class="sql-trainer-toggle">&#9660;</div>';
+  // Header progress row (visible always)
+  const headerProgress = document.createElement('div');
+  headerProgress.className = 'sql-trainer-header-progress';
+  const headerLabel = document.createElement('span');
+  headerLabel.textContent = 'Решено: ';
+  const headerScore = document.createElement('span');
+  headerScore.className = 'sql-score';
+  headerScore.textContent = '0 / ' + SQL_EXERCISES.length;
+  const headerBar = document.createElement('div');
+  headerBar.className = 'sql-progress-bar';
+  const headerFill = document.createElement('div');
+  headerFill.className = 'sql-progress-fill';
+  headerBar.appendChild(headerFill);
+  headerProgress.appendChild(headerLabel);
+  headerProgress.appendChild(headerScore);
+  headerProgress.appendChild(headerBar);
+  header.appendChild(headerProgress);
+  wrap.appendChild(header);
+
+  header.addEventListener('click', () => wrap.classList.toggle('open'));
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'sql-trainer-body';
+  const inner = document.createElement('div');
+  inner.className = 'sql-trainer-inner';
+  body.appendChild(inner);
+  wrap.appendChild(body);
+
+  // Schema
+  inner.innerHTML = '<div class="sql-schema"><strong>📋 Схема таблиц</strong><div class="sql-schema-tables"><div class="sql-schema-table"><div class="sql-schema-table-name">users</div><div class="sql-schema-col">id<em>PK INT</em></div><div class="sql-schema-col">name<em>VARCHAR</em></div><div class="sql-schema-col">age<em>INT</em></div><div class="sql-schema-col">city<em>VARCHAR</em></div></div><div class="sql-schema-table"><div class="sql-schema-table-name">orders</div><div class="sql-schema-col">id<em>PK INT</em></div><div class="sql-schema-col">user_id<em>FK → users.id</em></div><div class="sql-schema-col">status<em>VARCHAR</em></div><div class="sql-schema-col">amount<em>DECIMAL</em></div><div class="sql-schema-col">created_at<em>DATETIME</em></div></div></div></div>';
+
+  // Exercises
+  let solved = 0;
+  const total = SQL_EXERCISES.length;
+
+  const progressBar = document.createElement('div');
+  const progressFill = document.createElement('div');
+  const progressLabel = document.createElement('span');
+  const scoreEl = document.createElement('span');
+
+  SQL_EXERCISES.forEach((ex, idx) => {
+    const exDiv = document.createElement('div');
+    exDiv.className = 'sql-exercise';
+
+    // Meta
+    const meta = document.createElement('div');
+    meta.className = 'sql-exercise-meta';
+    meta.innerHTML = '<span class="sql-tag ' + ex.tagClass + '">' + ex.tag + '</span><span class="sql-difficulty">' + ex.difficulty + '</span>';
+    exDiv.appendChild(meta);
+
+    // Task
+    const task = document.createElement('div');
+    task.className = 'sql-task';
+    task.innerHTML = ex.task;
+    exDiv.appendChild(task);
+
+    // Editor
+    const editorWrap = document.createElement('div');
+    editorWrap.className = 'sql-editor-wrap';
+    const textarea = document.createElement('textarea');
+    textarea.className = 'sql-editor';
+    textarea.placeholder = 'Напиши SQL-запрос...';
+    textarea.rows = 2;
+    textarea.spellcheck = false;
+    editorWrap.appendChild(textarea);
+    exDiv.appendChild(editorWrap);
+
+    // Controls
+    const controls = document.createElement('div');
+    controls.className = 'sql-controls';
+
+    const runBtn = document.createElement('button');
+    runBtn.className = 'sql-run-btn';
+    runBtn.textContent = '▶ Выполнить';
+
+    const hintBtn = document.createElement('button');
+    hintBtn.className = 'sql-hint-btn';
+    hintBtn.textContent = '💡 Подсказка';
+
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'sql-reset-btn';
+    resetBtn.textContent = '↺ сбросить';
+
+    controls.appendChild(runBtn);
+    controls.appendChild(hintBtn);
+    controls.appendChild(resetBtn);
+    exDiv.appendChild(controls);
+
+    // Hint box
+    const hintBox = document.createElement('div');
+    hintBox.className = 'sql-hint-box';
+    hintBox.textContent = ex.hint;
+    exDiv.appendChild(hintBox);
+
+    // Feedback
+    const feedback = document.createElement('div');
+    feedback.className = 'sql-feedback';
+    exDiv.appendChild(feedback);
+
+    // Logic
+    let wasSolved = false;
+
+    runBtn.addEventListener('click', () => {
+      const val = textarea.value.trim();
+      if (!val) { return; }
+
+      if (ex.validate(val)) {
+        textarea.className = 'sql-editor valid';
+        feedback.className = 'sql-feedback ok';
+        feedback.textContent = '✓ ' + ex.ok;
+        if (!wasSolved) {
+          wasSolved = true;
+          solved++;
+          updateProgress();
+        }
+      } else {
+        textarea.className = 'sql-editor invalid';
+        feedback.className = 'sql-feedback err';
+        feedback.textContent = '✗ Запрос не прошёл проверку. Перечитай задание и попробуй ещё раз. Используй подсказку, если нужно.';
+      }
+    });
+
+    textarea.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runBtn.click();
+    });
+
+    hintBtn.addEventListener('click', () => hintBox.classList.toggle('show'));
+
+    resetBtn.addEventListener('click', () => {
+      textarea.value = '';
+      textarea.className = 'sql-editor';
+      feedback.className = 'sql-feedback';
+      hintBox.classList.remove('show');
+    });
+
+    inner.appendChild(exDiv);
+  });
+
+  // Progress bar
+  function updateProgress() {
+    const pct = Math.round((solved / total) * 100);
+    progressFill.style.width = pct + '%';
+    headerFill.style.width = pct + '%';
+    headerScore.textContent = solved + ' / ' + total;
+  }
+
+  progressBar.className = 'sql-progress-bar';
+  progressFill.className = 'sql-progress-fill';
+  progressBar.appendChild(progressFill);
+
+  updateProgress();
+  container.appendChild(wrap);
+}
 function renderAll() {
   const container = document.getElementById('main-content');
   container.innerHTML = '';
@@ -1256,6 +2675,8 @@ function renderAll() {
 
     const sectionDiv = document.createElement('div');
     sectionDiv.className = 'section-block';
+    sectionDiv.id = 'section-' + si;
+    sectionDiv.dataset.si = String(si);
 
     const label = document.createElement('div');
     label.className = 'section-label';
@@ -1313,6 +2734,15 @@ function renderAll() {
       sectionDiv.appendChild(acc);
     });
 
+    // Add quiz block (only when not filtering/searching)
+    if (!searchVal && currentFilter === 'all' && section.quiz && section.quiz.length > 0) {
+      buildQuiz(section, sectionDiv);
+    }
+    // SQL trainer for "Базы данных" section
+    if (!searchVal && currentFilter === 'all' && section.num === '12') {
+      buildSqlTrainer(sectionDiv);
+    }
+
     container.appendChild(sectionDiv);
   });
 
@@ -1347,7 +2777,85 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+
+
+// ── SIDEBAR NAV ─────────────────────────────────────────
+function buildSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+
+  sidebar.innerHTML = '';
+  const title = document.createElement('div');
+  title.className = 'sidebar-title';
+  title.textContent = 'Разделы';
+  sidebar.appendChild(title);
+
+  DATA.forEach((section, si) => {
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-link';
+    btn.dataset.si = si;
+    btn.innerHTML = '<span class="sidebar-num">' + section.num + '</span><span>' + section.section + '</span>';
+    btn.addEventListener('click', () => {
+      const target = document.getElementById('section-' + si);
+      if (target) {
+        const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 90;
+        const y = target.getBoundingClientRect().top + window.scrollY - headerH - 16;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+    sidebar.appendChild(btn);
+  });
+}
+
+function initSidebarObserver() {
+  const links = () => document.querySelectorAll('.sidebar-link');
+  const headerH = () => parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 90;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const si = entry.target.dataset.si;
+        links().forEach(l => l.classList.toggle('active', l.dataset.si === si));
+      }
+    });
+  }, {
+    rootMargin: '-' + headerH() + 'px 0px -60% 0px',
+    threshold: 0
+  });
+
+  document.querySelectorAll('.section-block').forEach(el => observer.observe(el));
+}
+
+// ── THEME ───────────────────────────────────────────────
+(function() {
+  const saved = localStorage.getItem('qa_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+function initTheme() {
+  const toggle = document.getElementById('theme-toggle');
+  const icon   = document.getElementById('theme-icon');
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    icon.textContent = theme === 'light' ? '☀️' : '🌙';
+    localStorage.setItem('qa_theme', theme);
+  }
+
+  // Init icon
+  applyTheme(localStorage.getItem('qa_theme') || 'dark');
+
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  });
+}
+
+initTheme();
 renderAll();
+buildSidebar();
+setTimeout(initSidebarObserver, 100);
 </script>
+</div><!-- /.layout -->
 </body>
 </html>
